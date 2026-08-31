@@ -1,9 +1,49 @@
 \documentclass[12pt,a4paper]{article}
-\usepackage[brazilian]{babel}
+
+% encoding / language
+\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{geometry}
+\usepackage[brazilian]{babel}
+
+% misc
 \usepackage{fmtcount}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{enumitem}
+\usepackage[normalem]{ulem}
+\usepackage{fancyvrb}
+\usepackage{xcolor}
+
+% citations
+\usepackage[style=abnt]{biblatex}
+\addbibresource{ref.bib}
+
+% spacing
 \frenchspacing
+\setlength{\parindent}{1.25cm}
+\usepackage{setspace}
+\onehalfspacing
+\usepackage[top=3cm,bottom=2cm,left=3cm,right=2cm]{geometry}
+
+% font
+\usepackage[scaled]{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage{sfmath}
+
+\newenvironment{question}[1]{
+    \par\medskip\noindent
+    \textbf{Questão #1} \dotfill
+    \par\nopagebreak\medskip
+}{
+    \medskip
+}
+
+\newcommand{\listtitle}[1]{
+    \par\medskip\noindent
+    {\rmfamily\small\textbf{\uline{#1:}}}
+    \par\nopagebreak
+}
+
+\renewcommand{\theFancyVerbLine}{\ttfamily\color{gray}\arabic{FancyVerbLine}}
 
 \title{Resolução de questões objetivas de Complexidade de Algoritmos do Enade de Ciência da Computação}
 \date{\today}
@@ -14,24 +54,91 @@
 \ordinalnum{1}[f] atividade da disciplina optativa ENADE-2026.2, do Professor Ricardo Azevedo Moreira da Silva.
 As questões objetivas (múltipla escolha) foram selecionadas das últimas três provas do Exame Nacional de Desempenho dos Estudantes (Enade)
 e envolvem o assunto de Complexidade de Algoritmos.
-A seção Fundamentos contém todo o conteúdo necessário e devidamente resumido para um estudante de Ciência da Computação resolver as questões.
-A seção Questões contém as questões resolvidas e justificadas.
-Essas seções citam livros presentes na seção Referências.
+A seção \textbf{Fundamentos} contém todo o conteúdo necessário e devidamente resumido para um estudante de Ciência da Computação resolver as questões.
+A seção \textbf{Questões} contém as questões resolvidas e justificadas.
+Essas seções citam livros presentes na seção \textbf{Referências}.
 
 \section{Fundamentos}
-\ldots{}
+Segundo \textcite[35]{clrs2022}, blá blá blá...
+Isso resulta em uma complexidade de tempo de $O(n)$ \parencite{clrs2022}.
+\dots
 
 \section{Questões}
-Lorem ipsum dolor sit amet consectetur adipiscing elit.
-Quisque faucibus ex sapien vitae pellentesque sem placerat.
-In id cursus mi pretium tellus duis convallis.
-Tempus leo eu aenean sed diam urna tempor.
-Pulvinar vivamus fringilla lacus nec metus bibendum egestas.
-Iaculis massa nisl malesuada lacinia integer nunc posuere.
-Ut hendrerit semper vel class aptent taciti sociosqu.
-Ad litora torquent per conubia nostra inceptos himenaeos.
+\begin{question}{2014-12}
+Analise o custo computacional dos algoritmos a seguir, que calculam o valor de um polinômio de grau $n$, da forma:
+$P(x) = a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0$,
+onde os coeficientes são números de ponto flutuante armazenados no vetor $a[0..n]$, e o valor de $n$ é maior que zero.
+Todos os coeficientes podem assumir qualquer valor, exceto o coeficiente $a_n$, que é diferente de zero.
 
-\section{Referências}
-\ldots{}
+\noindent\begin{minipage}{\linewidth}
+\listtitle{Algoritmo 1}
+\begin{Verbatim}[numbers=left]
+soma = a[0]
+Repita para i = 1 até n
+    Se a[i] != 0.0 então
+        potência = x
+        Repita para j = 2 até i
+            potência = potência * x
+        Fim repita
+        soma = soma + a[i] * potencia
+    Fim se
+Fim repita
+Imprima(soma)
+\end{Verbatim}
 
+\listtitle{Algoritmo 2}
+\begin{Verbatim}[numbers=left]
+soma = a[n]
+Repita para i = n-1 até 0 passo -1
+    soma = soma * x + a[i]
+Fim repita
+Imprima(soma)
+\end{Verbatim}
+\medskip
+\end{minipage}
+
+\noindent
+Com base nos algoritmos 1 e 2, avalie as asserções a seguir e a relação proposta entre elas.
+
+\begin{enumerate}[label=\Roman*.]
+    \item Os algoritmos possuem a mesma complexidade assintótica.
+\end{enumerate}
+
+\begin{center}
+    \textbf{PORQUE}
+\end{center}
+
+\begin{enumerate}[label=\Roman*., start=2]
+    \item Para o melhor caso, ambos os algoritmos possuem complexidade $O(n)$.
+\end{enumerate}
+
+\medskip\noindent
+A respeito dessas asserções, assinale a opção correta.
+
+\begin{spacing}{0.9}
+\begin{small}
+\begin{enumerate}[label=\Alph*)]
+    \item As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.
+    \item As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.
+    \item A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.
+    \item A asserção I é uma proposição falsa, e a II é uma proposição verdadeira.
+    \item As asserções I e II são proposições falsas.
+\end{enumerate}
+\end{small}
+\end{spacing}
+\end{question}
+
+\begin{question}{2014-16}
+\dots
+\end{question}
+
+% 2014-22
+% 2014-28
+% 2014-30
+% 2017-25
+% 2017-33
+% 2021-20
+% 2021-32
+
+\printbibliography
 \end{document}
