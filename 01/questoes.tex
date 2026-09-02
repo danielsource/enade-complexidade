@@ -18,6 +18,7 @@
 \addbibresource{ref.bib}
 
 % spacing
+\usepackage{indentfirst}
 \frenchspacing
 \setlength{\parindent}{1.25cm}
 \usepackage{setspace}
@@ -33,7 +34,7 @@
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=true,
-    urlcolor=blue,
+    urlcolor=[RGB]{0, 0, 130},
     linkcolor=.,
     citecolor=.
 }
@@ -43,7 +44,7 @@
     \pdfbookmark[2]{#1}{q:#1}
     \par\medskip\noindent
     \textbf{Questão #1} \dotfill
-    \par\nopagebreak\medskip
+    \par\medskip\nopagebreak
 }{%
     \medskip
 }
@@ -118,8 +119,9 @@ e operações de controle (desvios condicionais e incondicionais, sub-rotinas).
 Essas operações podem manipular inteiros, números de ponto flutuante e caracteres.
 
 Para o propósito desse resumo de análise da complexidade de algoritmos,
-o tempo de execução de um algoritmo é a soma das constantes $c_k$ para toda $k$-ésima linha de pseudocódigo.
-Exemplo com pseudocódigo adaptado de \textcite[25]{clrs2022}:
+começaremos enxergando que cada $k$-ésima linha de pseudocódigo tem o custo constante $c_k$.
+E assim, o tempo de execução de um algoritmo será visto como a soma dos custos das linhas executadas.
+Exemplificando com o pseudocódigo adaptado de \textcite[25]{clrs2022}:
 \listtitle{Sum-Array(\texttt{A, n})}
 \begin{Verbatim}[numbers=left, commandchars=\\\{\}]
 sum = 0                 # custo = \(c\sb{1}\),    vezes = \(1\)
@@ -127,11 +129,37 @@ for i = 0 to n - 1      # custo = \(c\sb{2}\),    vezes = \(n + 1\)
     sum = sum + A[i]    # custo = \(c\sb{3}\),    vezes = \(n\)
 return sum              # custo = \(c\sb{4}\),    vezes = \(1\)
 \end{Verbatim}
-Em \textit{Sum-Array}, temos que a linha 1 tem um custo $c_1$ e é executada $1$ vez,
+O algoritmo \textit{Sum-Array} retorna a soma dos valores do vetor \texttt{A}.
+Nesse algoritmo, temos que a linha 1 tem um custo $c_1$ e é executada $1$ vez,
 já a linha 2 tem um custo $c_2$ e é executada $n + 1$ vezes, pois o intervalo do laço é fechado de $0$ até $n - 1$,
-e é necessário fazer a verificação da condição de encerramento quando $i = n$.
+e é necessário fazer o teste da condição do laço quando $i = n$.
+Iremos denotar o tempo de execução de um algoritmo com uma entrada de tamanho $n$ por $T(n)$,
+obtendo isto para \textit{Sum-Array}:
+\[
+    T(n) = c_1 + c_2(n + 1) + c_3n + c_4.
+\]
 
-\dots
+\subsection{Análise por casos}
+O exemplo anterior com \textit{Sum-Array} mostra que o tempo de execução ($T(n)$) pode depender do tamanho da entrada ($n$).
+Porém, existem algoritmos onde $T(n)$ também depende da própria configuração da entrada, por exemplo:
+\listtitle{Linear-Search(\texttt{A, n, k})}
+\begin{Verbatim}[numbers=left, commandchars=\\\{\}]
+i = 0
+while i < n and A[i] != k
+    i = i + 1
+if A[i] != k
+    return -1
+return i
+\end{Verbatim}
+O algoritmo \textit{Linear-Search} retorna o índice do primeiro elemento do vetor \texttt{A} que seja igual a \texttt{k}, caso contrário, retorna \texttt{-1}.
+Caso tenhamos que \texttt{A[0] == k}, o teste da condição do laço irá rodar uma vez e sair imediatamente pois \texttt{A[i] != k} é falso.
+Por outro lado, se \texttt{A} não contém \texttt{k}, o laço irá rodar $n$ vezes e retornar \texttt{-1}.
+Portanto, existe a necessidade de analisar um mesmo algoritmo em diferentes casos.
+
+Conforme \textcite[31]{clrs2022}, iremos se concentrar em achar apenas o pior caso, isto é,
+o maior $T(n)$ para qualquer entrada de tamanho $n$.
+Ao encontrar esse pior caso, temos a garantia que o algoritmo nunca vai demorar mais que isso.
+
 \subsection{Notação assintótica (\texorpdfstring{$O, \Theta, \Omega$}{O, Theta, Omega})}
 \dots
 
@@ -222,14 +250,14 @@ quando todo coeficiente é igual a zero e logo o bloco interno é executado apen
 incrementando nossa soma com o seu valor anterior multiplicado por $x$ e adicionando o coeficiente $a_i$.
 Para visualizar melhor, entenda que \texttt{soma} tem seu valor alterado ao longo do tempo desta forma:
 \[
-\begin{aligned}
-\text{soma} &\gets a_n &&\text{(valor inicial antes do laço)}\\
-\text{soma} &\gets (a_n)x + a_{n-1}, &&\text{ou }\quad a_nx + a_{n-1}\\
-\text{soma} &\gets (a_nx + a_{n-1})x + a_{n-2}, &&\text{ou }\quad a_nx^2 + a_{n-1}x + a_{n-2}\\
-\text{soma} &\gets (a_nx^2 + a_{n-1}x + a_{n-2})x + a_{n-3}, &&\text{ou }\quad a_nx^3 + a_{n-1}x^2 + a_{n-2}x + a_{n-3}\\
-&\vdots\\
-\text{soma} &\gets a_nx^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0 &&\text{(totalizando $n$ iterações)}.
-\end{aligned}
+    \begin{aligned}
+    \text{soma} &\gets a_n &&\text{(valor inicial antes do laço)}\\
+    \text{soma} &\gets (a_n)x + a_{n-1}, &&\text{ou }\quad a_nx + a_{n-1}\\
+    \text{soma} &\gets (a_nx + a_{n-1})x + a_{n-2}, &&\text{ou }\quad a_nx^2 + a_{n-1}x + a_{n-2}\\
+    \text{soma} &\gets (a_nx^2 + a_{n-1}x + a_{n-2})x + a_{n-3}, &&\text{ou }\quad a_nx^3 + a_{n-1}x^2 + a_{n-2}x + a_{n-3}\\
+    &\vdots\\
+    \text{soma} &\gets a_nx^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0 &&\text{(totalizando $n$ iterações)}.
+    \end{aligned}
 \]
 De acordo com \textcite[879]{clrs2022}, esse algoritmo utiliza a regra de Horner para avaliar um polinômio em tempo $\Theta(n)$,
 pois possui um laço e esse não contém nenhuma estrutura condicional ou outro laço interno.\\
