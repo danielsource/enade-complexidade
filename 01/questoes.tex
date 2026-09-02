@@ -14,7 +14,7 @@
 
 % citations
 \usepackage{csquotes}
-\usepackage[style=abnt]{biblatex}
+\usepackage[style=abnt,maxbibnames=5]{biblatex}
 \addbibresource{ref.bib}
 
 % spacing
@@ -85,6 +85,11 @@ as resoluções são destacadas \begin{solution}desta forma (inclinada e verde e
     \rule{\linewidth}{0.3pt}
 \end{quote}
 
+Analisar a eficiência é o foco central da disciplina de Complexidade de Algoritmos.
+Essa subárea examina o custo de tempo, memória ou outros recursos necessários para resolver problemas computacionais;
+e a complexidade é a métrica definida de forma abstrata (em vez de usar o tempo de execução ou outro recurso real)
+para descrever a eficiência do algoritmo independente da sua implementação real \parencite[275--276]{sipser2012}.
+
 Uma vez que temos um algoritmo implementado, é simples cronometrar o seu tempo de execução.
 Porém, o algoritmo será mais rápido em um computador mais performático~---
 que consegue executar mais instruções ou processar mais dados~---
@@ -92,7 +97,7 @@ em comparação a um computador menos performático.
 
 Como bem pontuado em \textcite[27]{clrs2022} na análise do \textit{insertion sort},
 para descobrir quanto tempo esse algoritmo de ordenação gasta, uma forma seria rodar em seu computador.
-Mas para isso, seria necessário implementar o algoritmo numa \emph{linguagem de programação real}.
+Mas para isso, seria necessário implementar o algoritmo numa linguagem de programação real.
 O resultado desse teste te daria quanto tempo gastou aquela implementação, com uma certa entrada,
 com algum compilador ou interpretador, usando bibliotecas específicas,
 com tarefas diversas rodando em plano de fundo no seu sistema operacional.
@@ -103,7 +108,7 @@ Para podermos focar no algoritmo geral e não numa implementação em específic
 teremos que usar um método que independa desses detalhes, mas nos dê informação suficiente;
 analisando a ideia, ou a descrição abstrata em pseudocódigo, por exemplo.
 
-Dessa forma, utilizemos como base uma simplificado do modelo computacional de \textcite[26]{clrs2022},
+Dessa forma, utilizemos como base uma simplificação do modelo computacional de \textcite[26]{clrs2022},
 assumindo uma máquina de acesso-aleatório (\textit{random-access machine})
 com um único processador, sendo que esse executa instruções uma após a outra, sem operações concorrentes.
 Nesse modelo, temos operações lógico-aritméticas (adição, subtração, multiplicação, divisão, operadores lógicos, etc.),
@@ -111,7 +116,7 @@ operações de movimento de dados (carregar, guardar, copiar dados)
 e operações de controle (desvios condicionais e incondicionais, sub-rotinas).
 Essas operações podem manipular inteiros, números de ponto flutuante e caracteres.
 
-Para o propósito desse estudo de análise da complexidade de algoritmos,
+Para o propósito desse resumo de análise da complexidade de algoritmos,
 o tempo de execução de um algoritmo é a soma das constantes $c_k$ para toda $k$-ésima linha de pseudocódigo.
 Exemplo com pseudocódigo adaptado de \textcite[25]{clrs2022}:
 \listtitle{Sum-Array(\texttt{A, n})}
