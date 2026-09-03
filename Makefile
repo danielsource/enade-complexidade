@@ -1,9 +1,9 @@
-all: build/questoes.pdf
+all: build/complexidade.pdf
 
-build/questoes.pdf: questoes.tex ref.bib
+build/complexidade.pdf: complexidade.tex ref.bib
 	mkdir -p build
 	pdflatex -interaction=nonstopmode -halt-on-error -output-directory build $<
-	biber build/questoes
+	biber build/complexidade
 	pdflatex -interaction=nonstopmode -halt-on-error -output-directory build $<
 	pdflatex -interaction=nonstopmode -halt-on-error -output-directory build $<
 
