@@ -87,39 +87,36 @@ as resoluções são destacadas \begin{solution}desta forma (inclinada e verde e
     \rule{\linewidth}{0.3pt}
 \end{quote}
 
+\subsection{Contextualização}
 Analisar a eficiência é o foco central da disciplina de Complexidade de Algoritmos.
-Essa subárea examina o custo de tempo, memória ou outros recursos necessários para resolver problemas computacionais;
-e a complexidade é a métrica definida de forma abstrata (em vez de usar o tempo de execução ou outro recurso real)
-para descrever a eficiência do algoritmo independentemente da sua implementação real \parencite[275--276]{sipser2012}.
+Essa subárea examina o custo de tempo, memória ou outros recursos necessários para resolver problemas computacionais
+(por exemplo, para decidir qual técnica utilizar dentre várias);
+e a complexidade é a métrica definida de forma abstrata (em vez de usar o tempo decorrido real ou outro recurso)
+para descrever a eficiência do algoritmo independentemente da sua implementação real
+ \parencite[275--276]{sipser2012}.
 
 Uma vez que temos um algoritmo implementado, é simples cronometrar o seu tempo de execução.
 Porém, o algoritmo será mais rápido em um computador mais performático~---
 que consegue executar mais instruções ou processar mais dados~---
 em comparação a um computador menos performático.
 
-Como bem pontuado em \textcite[27]{clrs2022} na análise do \textit{insertion sort},
+Como pontuado em \textcite[27--28]{clrs2022} na análise do \textit{insertion sort},
 para descobrir quanto tempo esse algoritmo de ordenação gasta, uma forma seria rodar em seu computador.
 Mas para isso, seria necessário implementar o algoritmo numa linguagem de programação real.
 O resultado desse teste te daria quanto tempo gastou aquela implementação, com uma certa entrada,
 com algum compilador ou interpretador, usando bibliotecas específicas,
-com tarefas diversas rodando em plano de fundo no seu sistema operacional.
+com tarefas diversas rodando em plano de fundo no seu sistema operacional;
+esse teste é possível, porém volátil.
 
-Isso nos mostra que esse teste é possível, porém volátil.
-Para podermos focar no algoritmo geral e não numa implementação em particular
-(por exemplo, para decidir qual algoritmo utilizar dentre vários),
-teremos que usar um método que independa desses detalhes, mas nos dê informação suficiente;
+\subsection{Modelo de computação}
+Por isso, precisamos utilizar um método que independa desses detalhes de implementação discutidos, mas nos dê informação suficiente;
 analisando a ideia, ou a descrição abstrata em pseudocódigo, por exemplo.
-
-Dessa forma, utilizemos como base uma simplificação do modelo computacional de \textcite[26]{clrs2022},
-assumindo uma máquina de acesso-aleatório (\textit{random-access machine})
-com um único processador, sendo que esse executa instruções uma após a outra, sem operações concorrentes.
-Nesse modelo, temos operações lógico-aritméticas (adição, subtração, multiplicação, divisão, operadores lógicos, etc.),
-operações de movimento de dados (carregar, guardar, copiar dados)
-e operações de controle (desvios condicionais e incondicionais, sub-rotinas).
-Essas operações podem manipular inteiros, números de ponto flutuante e caracteres.
-
 Para o propósito deste resumo de análise da complexidade de algoritmos,
-começaremos enxergando que cada $k$-ésima linha de pseudocódigo tem o custo constante $c_k$.
+iremos nos basear numa simplificação do modelo computacional de \textcite[26]{clrs2022},
+exergando uma máquina com um processador que suporta as operações presentes no pseudocódigo e
+executa cada instrução uma após a outra.
+
+Cada $k$-ésima linha de pseudocódigo tem o custo de tempo constante $c_k$.
 E assim, o tempo de execução de um algoritmo será visto como a soma dos custos das linhas executadas.
 Exemplificando com o pseudocódigo adaptado de \textcite[25]{clrs2022}:
 \listtitle{Sum-Array(\texttt{A, n})}
@@ -129,15 +126,16 @@ for i = 0 to n - 1      # custo = \(c\sb{2}\),    vezes = \(n + 1\)
     sum = sum + A[i]    # custo = \(c\sb{3}\),    vezes = \(n\)
 return sum              # custo = \(c\sb{4}\),    vezes = \(1\)
 \end{Verbatim}
-O algoritmo \textit{Sum-Array} retorna a soma dos valores do vetor \texttt{A}.
+O algoritmo \textit{Sum-Array} retorna a soma dos valores do vetor \texttt{A} de tamanho $n$.
 Nesse algoritmo, temos que a linha 1 tem um custo $c_1$ e é executada $1$ vez,
 já a linha 2 tem um custo $c_2$ e é executada $n + 1$ vezes, pois o intervalo do laço é fechado de $0$ até $n - 1$,
 e é necessário fazer o teste da condição do laço quando $i = n$.
 Iremos denotar o tempo de execução de um algoritmo com uma entrada de tamanho $n$ por $T(n)$,
 obtendo isto para \textit{Sum-Array}:
 \[
-    T(n) = c_1 + c_2(n + 1) + c_3n + c_4.
+    T(n) = c_1 + c_2(n + 1) + c_3n + c_4
 \]
+\parencite[29]{clrs2022}.
 
 \subsection{Análise por casos}
 O exemplo anterior com \textit{Sum-Array} mostra que o tempo de execução ($T(n)$) pode depender do tamanho da entrada ($n$).
@@ -167,6 +165,7 @@ Ao encontrar esse pior caso, temos a garantia de que o algoritmo nunca vai demor
 
 \section{Questões}
 \begin{question}{2014-12}
+\noindent
 Analise o custo computacional dos algoritmos a seguir, que calculam o valor de um polinômio de grau $n$, da forma:
 $P(x) = a_nx^n + a_{n-1}x^{n-1} + \dots + a_1 x + a_0$,
 onde os coeficientes são números de ponto flutuante armazenados no vetor $a[0..n]$, e o valor de $n$ é maior que zero.
