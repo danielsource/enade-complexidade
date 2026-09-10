@@ -103,7 +103,7 @@ esse teste é possível, porém volátil.
 Dessa forma, precisamos utilizar um método que independa desses detalhes de implementação discutidos, mas nos dê informação suficiente;
 analisando a ideia, ou a descrição abstrata em pseudocódigo, por exemplo.
 Para o propósito deste resumo, iremos nos basear numa simplificação do modelo computacional de \textcite[26]{clrs2022},
-exergando uma máquina com um processador que suporta as operações presentes no pseudocódigo e
+enxergando uma máquina com um processador que suporta as operações presentes no pseudocódigo e
 executa cada instrução uma após a outra.
 
 Cada $k$-ésima linha de pseudocódigo tem o custo de tempo constante $c_k$.
@@ -144,12 +144,42 @@ Caso tenhamos que \texttt{A[0] == k}, o teste da condição do laço irá rodar 
 Por outro lado, se \texttt{A} não contém \texttt{k}, o laço irá rodar $n$ vezes e retornar \texttt{-1}.
 Portanto, existe a necessidade de analisar um mesmo algoritmo em diferentes casos.
 
-Conforme \textcite[31]{clrs2022}, iremos nos concentrar em achar apenas o pior caso, isto é,
+Conforme \textcite[31]{clrs2022}, geralmente nos concentramos em achar apenas o pior caso, isto é,
 o maior $T(n)$ para qualquer entrada de tamanho $n$.
 Ao encontrar esse pior caso, temos a garantia de que o algoritmo nunca vai demorar mais que isso.
 
 \section{Complexidade assintótica (\texorpdfstring{$O, \Theta, \Omega$}{O, Theta, Omega})}
-\dots
+O tipo de análise apresentada nas seções anteriores e a presente em \textcite[seç. 2.2]{clrs2022}
+ignora o custo de tempo real e, em vez disso, utiliza constantes $c_k$.
+Porém, ao analisarmos algoritmos cada vez maiores e com mais casos possíveis,
+podemos ter dificuldade em analisar o que mais importa a medida que o tamanho da entrada $n$ aumenta.
+
+Como essas constantes dão mais detalhes do que o necessário, vamos eliminar todos os termos de menor grau
+e todos os coeficientes da expressão $T(n)$; por exemplo, considere um algoritmo qualquer de 50 linhas de código com
+\[
+    T(n) = c_1 + c_2 + \dots + 8c_{24}^2 + c_{25}n^3 + \dots + c_{50}.
+\]
+Considere também que o termo de maior grau desse $T(n)$ é $c_{25}n^3$; logo podemos simplificar para
+\[
+    T(n) = n^3;
+\]
+sabendo que, para o nosso propósito, analisar esse novo $T(n)$ é suficiente pois a medida que $n$ aumenta,
+todos os outros termos ficam menos significativos.
+Essa abstração é chamada de \emph{ordem de crescimento} e pode ser denotada melhor usando $\Theta$ (ou big theta),
+em vez de $T(n)$.
+Usando o exemplo do \textit{insertion sort},
+escrevemos que esse algoritmo tem o tempo de pior caso de $\Theta(n^2)$ (``theta de n ao quadrado''),
+e tem o tempo de melhor caso de $\Theta(n)$.
+Informalmente, entenda que $\Theta(n^2)$ significa que o custo será aproximadamente proporcional a $n^2$ quando $n$ é grande
+\parencite[32--33]{clrs2022}.
+
+Com essa métrica, é razoável, na maior parte dos casos,
+considerar um algoritmo como mais eficiente em comparação a outro, se tiver uma order de crescimento menor.
+Eventualmente, mesmo com grandes constantes, um algoritmo com $\Theta(n^2)$ vai ser mais eficiente que outro com $\Theta(n^3)$.
+
+% assintótica
+% custo computacional / complexidade
+% O/Omega
 
 \begin{question}{2014-12}
 Analise o custo computacional dos algoritmos a seguir, que calculam o valor de um polinômio de grau $n$, da forma:
