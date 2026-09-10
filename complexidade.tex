@@ -152,7 +152,7 @@ Ao encontrar esse pior caso, temos a garantia de que o algoritmo nunca vai demor
 O tipo de análise apresentada nas seções anteriores e a presente em \textcite[seç. 2.2]{clrs2022}
 ignora o custo de tempo real e, em vez disso, utiliza constantes $c_k$.
 Porém, ao analisarmos algoritmos cada vez maiores e com mais casos possíveis,
-podemos ter dificuldade em analisar o que mais importa a medida que o tamanho da entrada $n$ aumenta.
+podemos ter dificuldade em analisar o que mais importa à medida que o tamanho da entrada $n$ aumenta.
 
 Como essas constantes dão mais detalhes do que o necessário, vamos eliminar todos os termos de menor grau
 e todos os coeficientes da expressão $T(n)$; por exemplo, considere um algoritmo qualquer de 50 linhas de código com
@@ -163,23 +163,33 @@ Considere também que o termo de maior grau desse $T(n)$ é $c_{25}n^3$; logo po
 \[
     T(n) = n^3;
 \]
-sabendo que, para o nosso propósito, analisar esse novo $T(n)$ é suficiente pois a medida que $n$ aumenta,
+sabendo que, para o nosso propósito, analisar esse novo $T(n)$ é suficiente pois à medida que $n$ aumenta,
 todos os outros termos ficam menos significativos.
-Essa abstração é chamada de \emph{ordem de crescimento} e pode ser denotada melhor usando $\Theta$ (ou big theta),
+Essa abstração é chamada de \emph{ordem de crescimento} (ou taxa de crescimento)
+e pode ser denotada melhor usando $\Theta$ (ou \textit{Big-Theta}),
 em vez de $T(n)$.
 Usando o exemplo do \textit{insertion sort},
 escrevemos que esse algoritmo tem o tempo de pior caso de $\Theta(n^2)$ (``theta de n ao quadrado''),
 e tem o tempo de melhor caso de $\Theta(n)$.
-Informalmente, entenda que $\Theta(n^2)$ significa que o custo será aproximadamente proporcional a $n^2$ quando $n$ é grande
+Informalmente, entenda que $\Theta(n^2)$ significa que o custo será aproximadamente proporcional à $n^2$ quando $n$ é grande
 \parencite[32--33]{clrs2022}.
 
 Com essa métrica, é razoável, na maior parte dos casos,
 considerar um algoritmo como mais eficiente em comparação a outro, se tiver uma order de crescimento menor.
-Eventualmente, mesmo com grandes constantes, um algoritmo com $\Theta(n^2)$ vai ser mais eficiente que outro com $\Theta(n^3)$.
+Eventualmente, mesmo com grandes constantes, um algoritmo no pior caso com $\Theta(n^2)$ vai ser mais eficiente que outro com $\Theta(n^3)$.
 
-% assintótica
-% custo computacional / complexidade
-% O/Omega
+Assim, é possível estudar a complexidade assintótica de algoritmos.
+Isto é, analisar como o custo computacional aumenta à medida que o tamanho da entrada tende para o infinto.
+Enquanto que a notação $\Theta$ nos informa que uma função \emph{cresce precisamente} a uma certa taxa,
+a notação $O$ (ou \textit{Big-O}) nos garante que uma função \emph{não cresce mais rápido} que uma certa taxa.
+O \textit{Big-O} é mais comum de ser utilizado, e também por isso, é o mais comum de ser mal entendido.
+Podemos dizer que o pior caso do \textit{insertion sort} é $O(n^2)$, $O(n^3)$, ou $O(n!)$; tudo isso é verdade,
+pois essa notação apenas define o limite superior.
+Similarmente, a notação $\Omega$ (ou \textit{Big-Omega}) nos garante que uma função \emph{cresce pelo menos tão rápido} que uma certa taxa;
+ou seja, essa notação define o limite inferior.
+\parencite[49--51, 57]{clrs2022}.
+
+É importante ...
 
 \begin{question}{2014-12}
 Analise o custo computacional dos algoritmos a seguir, que calculam o valor de um polinômio de grau $n$, da forma:
