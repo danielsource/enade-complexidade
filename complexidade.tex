@@ -41,10 +41,11 @@
 \urlstyle{same}
 
 \newenvironment{question}[1]{%
-    \pdfbookmark[2]{#1}{q:#1}
+    \pdfbookmark[2]{Questão #1}{q:#1}
     \par\medskip\noindent
     \textbf{Questão #1} \dotfill
     \par\medskip\nopagebreak\noindent
+    \ignorespaces
 }{%
     \noindent\dotfill\medskip
 }
@@ -52,7 +53,6 @@
 \newcommand{\listtitle}[1]{%
     \par\medskip\noindent
     {\small\textbf{\underline{#1:}}}
-    \par\nopagebreak
 }
 
 \renewcommand{\theFancyVerbLine}{\ttfamily\color{gray}\arabic{FancyVerbLine}}
@@ -92,11 +92,11 @@ que consegue executar mais instruções ou processar mais dados~---
 em comparação a um computador menos performático.
 
 Como pontuado em \textcite[27--28]{clrs2022} na análise do \textit{insertion sort},
-para descobrir quanto tempo esse algoritmo de ordenação gasta, uma forma seria rodá-lo em um computador.
+para descobrir quanto tempo esse algoritmo de ordenação gasta, uma forma seria executá-lo em um computador.
 Mas para isso, seria necessário implementar o algoritmo em uma linguagem de programação real.
 O resultado desse teste demonstraria quanto tempo gastou aquela implementação, com uma certa entrada,
 com algum compilador ou interpretador, usando bibliotecas específicas,
-com tarefas diversas rodando em plano de fundo em um sistema operacional;
+com tarefas diversas executando em plano de fundo em um sistema operacional;
 esse teste é possível, porém volátil.
 
 \section{Modelo de computação}
@@ -125,6 +125,7 @@ obtendo isto para \textit{Sum-Array} \parencite[29]{clrs2022}:
 \[
     T(n) = c_1 + c_2(n + 1) + c_3n + c_4.
 \]
+\pagebreak
 
 \section{Análise por casos}
 O exemplo anterior com \textit{Sum-Array} mostra que o tempo de execução ($T(n)$) pode depender do tamanho da entrada ($n$).
@@ -139,8 +140,8 @@ if i == n
 return i
 \end{Verbatim}
 O algoritmo \textit{Linear-Search} retorna o índice do primeiro elemento do vetor \texttt{A} que seja igual a \texttt{k}, caso contrário, retorna \texttt{-1}.
-Caso tenhamos que \texttt{A[0] == k}, o teste da condição do laço irá rodar uma vez e sair imediatamente, pois \texttt{A[i] != k} é falso.
-Por outro lado, se \texttt{A} não contém \texttt{k}, o laço irá rodar $n$ vezes e retornar \texttt{-1}.
+Caso tenhamos que \texttt{A[0] == k}, o teste da condição do laço executará uma vez e sairá imediatamente, pois \texttt{A[i] != k} é falso.
+Por outro lado, se \texttt{A} não contém \texttt{k}, o laço executará $n$ vezes e retornará \texttt{-1}.
 Portanto, existe a necessidade de analisar um mesmo algoritmo em diferentes casos.
 
 Conforme \textcite[31]{clrs2022}, geralmente nos concentramos em achar apenas o pior caso, isto é,
@@ -189,10 +190,12 @@ ou seja, essa notação define o limite inferior \parencite[49--51, 57]{clrs2022
 É importante salientar que não podemos dizer, por exemplo, que ``o algoritmo \textit{insertion sort} \emph{é} $\Theta(n^2)$'',
 já que ``pior caso'' está omitido da frase; e assim, implicitamente estamos afirmando isso para todos os casos,
 o que é incorreto, pois no melhor caso temos $\Theta(n)$.
-Além disso, é inútil dizer que ``\textit{insertion sort} \emph{é} $O(n^2)$''; por mais que isso seja verdade,
+Além disso, não é tão útil dizer que ``\textit{insertion sort} \emph{é} $O(n^2)$''; por mais que isso seja verdade,
 poderíamos ter usado qualquer outro $O(n^c)$ em que $c \ge 2$ \parencite[57]{clrs2022}.
+\pagebreak
 
-\dots
+\subsection{Exemplos}
+Segue agora uma questão do Enade para exemplificar a análise de complexidade assintótica.
 
 \begin{question}{2014-12}
 Analise o custo computacional dos algoritmos a seguir, que calculam o valor de um polinômio de grau $n$, da forma:
@@ -258,14 +261,43 @@ A respeito dessas asserções, assinale a opção correta.
 \end{spacing}
 \end{question}
 
-% 2014-16
-% 2014-22
-% 2014-28
-% 2014-30
-% 2017-25
-% 2017-33
-% 2021-20
-% 2021-32
+Antes de respondermos à questão, veremos qual é a \emph{ordem de crescimento} de cada um dos algoritmos dependendo do caso.
+
+O Algoritmo 1 no pior caso é $\Theta(n^2)$, pois teremos uma entrada com todos os coeficientes diferentes de zero;
+e dado que temos o laço externo (linhas 2--10) que executa $n$ vezes e que a condição da linha 3 é sempre verdadeira;
+o laço interno (linhas 5--7) executará $i - 1$ vezes (a partir do momento em que $i >= 2$), com $i$ crescendo até $n$;
+dessa forma, esse caso demonstra um laço aninhado com complexidade quadrática, ou $\Theta(n^2)$.
+
+O Algoritmo 1 no melhor caso é $\Theta(n)$, pois teremos uma entrada com apenas um coeficiente diferente de zero ($a_n$);
+e baseado no caso anterior, o laço interno (linhas 5--7) nunca será executado;
+dessa forma, esse caso demonstra um laço com complexidade linear, ou $\Theta(n)$.
+
+O Algoritmo 2 é mais eficiente e não possui múltiplos casos, já que, independentemente da entrada,
+o seu laço executa $n$ vezes; portanto, é $\Theta(n)$.
+
+Agora, podemos afirmar que a asserção I é falsa,
+pois vimos que os algoritmos não possuem a mesma complexidade em todos os casos.
+A asserção II é verdadeira, pois ambos os algoritmos no melhor caso possuem complexidade limitada superiormente por $n$, ou seja, são $O(n)$.
+Como a asserção I é falsa, não temos a relação proposta (``asserção I porque asserção II'').
+Logo, eliminando todas as opções contraditórias, temos que D é a opção correta.
+
+\dots
+
+% TODO: 2014-16
+
+% TODO: 2014-22
+
+% TODO: 2014-28
+
+% TODO: 2014-30
+
+% TODO: 2017-25
+
+% TODO: 2017-33
+
+% TODO: 2021-20
+
+% TODO: 2021-32
 
 \printbibliography[heading=bibintoc]
 \end{document}
