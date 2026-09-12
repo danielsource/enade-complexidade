@@ -140,7 +140,7 @@ o maior $T(n)$ para qualquer entrada de tamanho $n$.
 Ao encontrar esse pior caso, temos a garantia de que o algoritmo nunca vai demorar mais que isso.
 
 \section{Complexidade assintótica (\texorpdfstring{$O, \Theta, \Omega$}{O, Theta, Omega})}
-O tipo de análise apresentada nas seções anteriores e a presente em \textcite[seç. 2.2]{clrs2022}
+O tipo de análise apresentada nas seções anteriores e a presente em \textcite[seç.~2.2]{clrs2022}
 ignora o custo de tempo real e, em vez disso, utiliza constantes $c_k$.
 Porém, podemos ter dificuldade em analisar algoritmos cada vez maiores e com mais casos possíveis usando essa abordagem.
 
@@ -166,7 +166,7 @@ Informalmente, entenda que $\Theta(n^2)$ significa que o custo será aproximadam
 
 Com essa métrica, é razoável, na maior parte dos casos,
 considerar um algoritmo como mais eficiente em comparação a outro, se tiver uma ordem de crescimento menor.
-Inevitavelmente, mesmo com grandes constantes, um algoritmo no pior caso com $\Theta(n^2)$ vai ser mais eficiente que outro com $\Theta(n^3)$.
+Inevitavelmente, mesmo com grandes constantes, um algoritmo no pior caso com $\Theta(n^2)$ será mais eficiente que outro com $\Theta(n^3)$.
 
 Assim, é possível estudar a complexidade assintótica de algoritmos.
 Isto é, analisar como o custo computacional aumenta (em questão de tempo, memória, etc.) à medida que o tamanho da entrada tende para o infinito.
@@ -176,13 +176,13 @@ O \textit{Big-O} é mais comum de ser utilizado, e também por isso, é o mais c
 Podemos dizer que o pior caso do \textit{insertion sort} é $O(n^2)$, $O(n^3)$, ou $O(n!)$; tudo isso é verdade,
 pois essa notação apenas define o limite superior.
 Similarmente, a notação $\Omega$ (ou \textit{Big-Omega}) nos garante que uma função \emph{cresce pelo menos tão rápido} que uma certa taxa;
-ou seja, essa notação define o limite inferior \parencite[49--51, 57]{clrs2022}.
+ou seja, essa notação define o limite inferior \parencite[49--51,57]{clrs2022}.
 
 É importante salientar que não podemos dizer, por exemplo, que ``o algoritmo \textit{insertion sort} \emph{é} $\Theta(n^2)$'',
 já que ``pior caso'' está omitido da frase; e assim, implicitamente estamos afirmando isso para todos os casos,
 o que é incorreto, pois no melhor caso temos $\Theta(n)$.
-Além disso, não é tão útil dizer que ``\textit{insertion sort} \emph{é} $O(n^2)$''; por mais que isso seja verdade,
-poderíamos ter usado qualquer outro $O(n^c)$ em que $c \ge 2$ \parencite[57]{clrs2022}.
+Além disso, nem sempre é útil dizer que ``\textit{insertion sort} \emph{é} $O(n^2)$''; por mais que isso seja verdade,
+poderíamos ter usado qualquer outro $O(n^k)$ em que $k \ge 2$ \parencite[57]{clrs2022}.
 \pagebreak
 
 \subsection{Exemplos}
@@ -363,7 +363,8 @@ A afirmação II é verdadeira. Para comprovar, podemos rastrear os valores pres
     \item Na linha 7, \texttt{push(p, 2)} adiciona o 2 no topo: \texttt{[2, 3, 2]}.
     \item Na linha 8, ocorre \texttt{int a = pop(p) + pop(p);}. Serão desempilhados o 2 e 3. O valor atribuído será $2 + 3 = 5$. A pilha fica com: \texttt{[2]}.
     \item Na linha 9, \texttt{push(p, a)} empilha o 5, resultando em: \texttt{[2, 5]}.
-    \item Na linha 10, a instrução original \texttt{a += pop(p);} remove o 5 do topo e soma ao valor atual da variável \texttt{a} (que é 5), resultando em \texttt{a = 10}. Se a instrução fosse substituída por \texttt{a += a;}, a variável iria realizar a operação \texttt{a = 5 + 5 = 10}.
+    \item Na linha 10, a instrução original \texttt{a += pop(p);} remove o 5 do topo e soma ao valor atual da variável \texttt{a} (que é 5),
+    resultando em \texttt{a = 10}. Se a instrução fosse substituída por \texttt{a += a;}, a variável iria realizar a operação \texttt{a = 5 + 5 = 10}.
 \end{itemize}
 \end{small}
 Desta forma, o valor final impresso pela função seria \texttt{10} em ambos os casos.
@@ -371,11 +372,54 @@ Desta forma, o valor final impresso pela função seria \texttt{10} em ambos os 
 A afirmação III é falsa. Na linha 8 da implementação da pilha (\texttt{malloc(sizeof(pilha))}),
 a estrutura da pilha em si é alocada dinamicamente,
 e o vetor \texttt{elementos} faz parte desse espaço de armazenamento alocado (conhecido também como \textit{heap}).
-Conforme a especificação da linguagem C \parencite[seç. 7.24.3]{c23},
+Conforme a especificação da linguagem C \parencite[seç.~7.24.3]{c23},
 o tempo de vida de uma memória alocada dinamicamente (precisamente, \textit{allocated storage duration})
 se estende até que ela seja explicitamente desalocada.
 Por isso, a chamada à função \texttt{free(p)} não é opcional para evitar o vazamento de memória.
-Como apenas as afirmações I e II estão corretas, temos que C é a opção correta.\\
+Como apenas as afirmações I e II estão corretas, temos que C é a opção correta.
+
+\section{Classes de Complexidade}
+Enquanto problemas como o de caminho mínimo (Dijkstra%
+\footnote{Vídeo: \textit{How Dijkstra's Algorithm Works} (Canal Spanning Tree) --- \url{https://www.youtube.com/watch?v=EFg3u_E6eHU}})
+e de árvore geradora mínima (Prim/Kruskal%
+\footnote{Vídeo: \textit{How Do You Calculate a Minimum Spanning Tree?} (Canal Spanning Tree) --- \url{https://www.youtube.com/watch?v=Yldkh0aOEcg}})
+possuem soluções eficientes em tempo polinomial $O(n^k)$ (limite superior),
+um vasto conjunto de problemas de otimização é considerado intratável.
+Em termos fundamentais, um problema é dito intratável quando não possui nenhum algoritmo exato conhecido capaz de resolvê-lo em tempo polinomial
+para o pior caso, exigindo tempo de execução não polinomial ou exponencial (por exemplo, $\Theta(2^n)$ no pior caso).
+Segundo \textcite[cap.~34]{clrs2022}, temos as seguintes classes (dentre várias outras) que demonstram a diferença entre encontrar uma solução e verificar uma solução:
+\begin{itemize}
+    \item Classe $P$ (\textit{polynomial time}):
+    Contém os problemas de decisão que podem ser \emph{resolvidos} em tempo polinomial por um algoritmo determinístico (por exemplo, em $\Theta(n^3)$ no pior caso).
+    \item Classe $NP$ (\textit{non-deterministic polynomial time}):
+    Contém os problemas cujas soluções candidatas (chamadas de certificados) podem ser \emph{verificadas} em tempo polinomial.
+    Intuitivamente, encontrar uma solução do zero pode exigir uma busca exaustiva, mas checar se uma resposta fornecida está correta é rápido.
+    Como todo problema resolvível em tempo polinomial também é verificável em tempo polinomial, temos $P \subseteq NP$.
+    A principal questão em aberto na Ciência da Computação é se $P = NP$ ou $P \neq NP$.
+\end{itemize}
+Para mapear os problemas de forma mais precisa, definem-se os conceitos de $NP$-completo e $NP$-difícil:
+\begin{itemize}
+    \item $NP$-completo:
+    São os problemas mais difíceis dentro da classe $NP$.
+    Um problema é $NP$-completo se ele pertence a $NP$ e qualquer outro problema de $NP$ pode ser reduzido a ele em tempo polinomial.
+    Intuitivamente, eles representam uma ``ponte universal'': se um único problema $NP$-completo for resolvido em tempo polinomial
+    (o que ainda não se provou possível),
+    todos os problemas de $NP$ também o seriam (implicando $P = NP$).
+    \item $NP$-difícil (\textit{NP-hard}):
+    São problemas pelo menos tão difíceis quanto os $NP$-completos, mas que não precisam pertencer à classe $NP$.
+    É a categoria em que se enquadram as versões de otimização dos problemas $NP$-completos.
+\end{itemize}
+
+Um exemplo clássico da categoria $NP$ é o Problema do Caixeiro Viajante (\textit{traveling-salesperson problem}~---~TSP).
+Na sua versão de decisão (``existe uma rota de custo no máximo $k$?''), o problema é $NP$-completo,
+pois basta somar as arestas da rota fornecida para verificar o certificado em tempo polinomial.
+Porém, na sua versão de otimização (``qual é a rota de menor custo absoluto?''),
+o problema é $NP$-difícil \parencite[1091--1092]{clrs2022}.
+
+A relevância prática dessa teoria reside no conceito de redução em tempo polinomial:
+se um problema do mundo real pode ser reduzido ao TSP, ele herda sua intratabilidade.
+Ao demonstrar que um problema é $NP$-difícil, pode-se interromper a busca por uma solução exata em tempo polinomial para o pior caso
+e adotar abordagens de aproximação ou heurísticas capazes de encontrar soluções satisfatórias em tempo viável \parencite[1045--1047,seç.~35.2]{clrs2022}.
 
 % TODO: 2014-22
 
