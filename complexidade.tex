@@ -41,7 +41,7 @@
 \urlstyle{same}
 
 \newenvironment{question}[1]{%
-    \pdfbookmark[2]{Questão #1}{q:#1}
+    \pdfbookmark[3]{Questão #1}{q:#1}
     \par\medskip\noindent
     \textbf{Questão #1} \dotfill
     \par\medskip\nopagebreak\noindent
@@ -169,10 +169,10 @@ considerar um algoritmo como mais eficiente em comparação a outro, se tiver um
 Inevitavelmente, mesmo com grandes constantes, um algoritmo no pior caso com $\Theta(n^2)$ vai ser mais eficiente que outro com $\Theta(n^3)$.
 
 Assim, é possível estudar a complexidade assintótica de algoritmos.
-Isto é, analisar como o custo computacional aumenta à medida que o tamanho da entrada tende para o infinito.
+Isto é, analisar como o custo computacional aumenta (em questão de tempo, memória, etc.) à medida que o tamanho da entrada tende para o infinito.
 Enquanto a notação $\Theta$ nos informa que uma função \emph{cresce precisamente} a uma certa taxa,
 a notação $O$ (ou \textit{Big-O}) nos garante que uma função \emph{não cresce mais rápido} que uma certa taxa.
-O \textit{Big-O} é mais comum de ser utilizado, e também por isso, é o mais comum de ser mal entendido.
+O \textit{Big-O} é mais comum de ser utilizado, e também por isso, é o mais comum de ser incompreendido.
 Podemos dizer que o pior caso do \textit{insertion sort} é $O(n^2)$, $O(n^3)$, ou $O(n!)$; tudo isso é verdade,
 pois essa notação apenas define o limite superior.
 Similarmente, a notação $\Omega$ (ou \textit{Big-Omega}) nos garante que uma função \emph{cresce pelo menos tão rápido} que uma certa taxa;
@@ -186,7 +186,7 @@ poderíamos ter usado qualquer outro $O(n^c)$ em que $c \ge 2$ \parencite[57]{cl
 \pagebreak
 
 \subsection{Exemplos}
-Segue agora uma questão do Enade para exemplificar a análise de complexidade assintótica.
+Seguem agora questões resolvidas do Enade para exemplificar a análise de complexidade assintótica.
 
 \begin{question}{2014-12}
 Analise o custo computacional dos algoritmos a seguir, que calculam o valor de um polinômio de grau $n$, da forma:
@@ -270,11 +270,112 @@ Agora, podemos afirmar que a asserção I é falsa,
 pois vimos que os algoritmos não possuem a mesma complexidade em todos os casos.
 A asserção II é verdadeira, pois ambos os algoritmos no melhor caso possuem complexidade limitada superiormente por $n$, ou seja, são $O(n)$.
 Como a asserção I é falsa, não temos a relação proposta (``asserção I porque asserção II'').
-Logo, eliminando todas as opções contraditórias, temos que D é a opção correta.
+Logo, eliminando todas as opções contraditórias, temos que D é a opção correta.\\
 
-\dots
+\begin{question}{2014-16}
+Uma pilha é uma estrutura de dados que armazena uma coleção de itens de dados relacionados e que garante o seguinte funcionamento:
+o último elemento a ser inserido é o primeiro a ser removido.
+É comum na literatura utilizar os nomes \textit{push} e \textit{pop} para as operações de inserção e remoção de um elemento em uma pilha, respectivamente.
+O seguinte trecho de código em linguagem C define uma estrutura de dados pilha utilizando um vetor de inteiros,
+bem como algumas funções para sua manipulação.
 
-% TODO: 2014-16
+\medskip\noindent\begin{minipage}{\linewidth}
+\listtitle{Pilha (corrigido)}
+\begin{Verbatim}[numbers=left]
+#include <stdlib.h>
+#include <stdio.h>
+typedef struct {
+    int elementos[100];
+    int topo;
+} pilha;
+pilha *cria_pilha() {
+    pilha *p = malloc(sizeof(pilha));
+    p->topo = -1;
+    return p;
+}
+void push(pilha *p, int elemento) {
+    if (p->topo >= 99)
+        return;
+    p->elementos[++p->topo] = elemento;
+}
+int pop(pilha *p) {
+    int a = p->elementos[p->topo];
+    p->topo--;
+    return a;
+}
+\end{Verbatim}
+
+O programa a seguir utiliza uma pilha.
+
+\begin{Verbatim}[numbers=left]
+int main() {
+    pilha *p = cria_pilha();
+    push(p, 2);
+    push(p, 3);
+    push(p, 4);
+    pop(p);
+    push(p, 2);
+    int a = pop(p) + pop(p);
+    push(p, a);
+    a += pop(p);
+    printf("%d\n", a);
+    return 0;
+}
+\end{Verbatim}
+\medskip
+\end{minipage}
+
+\noindent
+A esse respeito, avalie as afirmações a seguir.
+
+\begin{enumerate}[label=\Roman*.]
+    \item A complexidade computacional de ambas as funções \texttt{push} e \texttt{pop} é $O(1)$.
+    \item O valor exibido pelo programa seria o mesmo caso a instrução \texttt{a += pop(p);} fosse trocada por \texttt{a += a;}
+    \item Em relação ao vazamento de memória (\textit{memory leak}), é opcional chamar a função \texttt{free(p)},
+    pois o vetor usado pela pilha é alocado estaticamente.
+\end{enumerate}
+
+\noindent
+É correto o que se afirma em
+
+\begin{spacing}{0.9}
+\begin{small}
+\begin{enumerate}[label=\Alph*)]
+    \item I, apenas.
+    \item III, apenas.
+    \item I e II, apenas.
+    \item II e III, apenas.
+    \item I, II e III.
+\end{enumerate}
+\end{small}
+\end{spacing}
+\end{question}
+
+A afirmação I é verdadeira. As funções \texttt{push} e \texttt{pop} executam um número constante de instruções,
+consistindo apenas de avaliações condicionais, atribuições e acesso indexado.
+Como não possuem nenhum laço de repetição, a complexidade computacional no pior caso de ambas é $O(1)$.
+
+A afirmação II é verdadeira. Para comprovar, podemos rastrear os valores presentes na pilha ao longo da execução das linhas da função \texttt{main}:
+\begin{small}
+\begin{itemize}
+    \item Nas linhas 3 a 5, ocorrem os empilhamentos e a pilha fica com: \texttt{[2, 3, 4]} (com o 4 no topo).
+    \item Na linha 6, \texttt{pop(p)} remove o 4, deixando a pilha assim: \texttt{[2, 3]}.
+    \item Na linha 7, \texttt{push(p, 2)} adiciona o 2 no topo: \texttt{[2, 3, 2]}.
+    \item Na linha 8, ocorre \texttt{int a = pop(p) + pop(p);}. Serão desempilhados o 2 e 3. O valor atribuído será $2 + 3 = 5$. A pilha fica com: \texttt{[2]}.
+    \item Na linha 9, \texttt{push(p, a)} empilha o 5, resultando em: \texttt{[2, 5]}.
+    \item Na linha 10, a instrução original \texttt{a += pop(p);} remove o 5 do topo e soma ao valor atual da variável \texttt{a} (que é 5), resultando em \texttt{a = 10}. Se a instrução fosse substituída por \texttt{a += a;}, a variável iria realizar a operação \texttt{a = 5 + 5 = 10}.
+\end{itemize}
+\end{small}
+Desta forma, o valor final impresso pela função seria \texttt{10} em ambos os casos.
+
+A afirmação III é falsa. Na linha 8 da implementação da pilha (\texttt{malloc(sizeof(pilha))}),
+a estrutura da pilha em si é alocada dinamicamente,
+e o vetor \texttt{elementos} faz parte desse espaço de armazenamento alocado (conhecido também como \textit{heap}).
+Conforme a especificação da linguagem C \parencite[seç. 7.24.3]{c23},
+o tempo de vida de uma memória alocada dinamicamente (precisamente, \textit{allocated storage duration})
+se estende até que ela seja explicitamente desalocada.
+Por isso, a chamada à função \texttt{free(p)} não é opcional para evitar o vazamento de memória.
+Como apenas as afirmações I e II estão corretas, temos que C é a opção correta.\\
 
 % TODO: 2014-22
 
