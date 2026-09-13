@@ -147,7 +147,7 @@ Porém, podemos ter dificuldade em analisar algoritmos cada vez maiores e com ma
 Como essas constantes dão mais detalhes do que o necessário, vamos eliminar todos os termos de menor grau
 e todos os coeficientes da expressão $T(n)$; por exemplo, considere um algoritmo qualquer de 50 linhas de código com
 \[
-    T(n) = c_1 + c_2 + \dots + 8c_{24}^2 + c_{25}n^3 + \dots + c_{50}.
+    T(n) = c_1 + c_2 + \dots + c_{11}8n^2 + \dots + c_{25}n^3 + \dots + c_{50}.
 \]
 Considere também que o termo de maior grau desse $T(n)$ é $c_{25}n^3$; logo podemos simplificar para
 \[
@@ -370,8 +370,8 @@ A afirmação II é verdadeira. Para comprovar, podemos rastrear os valores pres
 Desta forma, o valor final impresso pela função seria \texttt{10} em ambos os casos.
 
 A afirmação III é falsa. Na linha 8 da implementação da pilha (\texttt{malloc(sizeof(pilha))}),
-a estrutura da pilha em si é alocada dinamicamente,
-e o vetor \texttt{elementos} faz parte desse espaço de armazenamento alocado (conhecido também como \textit{heap}).
+a estrutura da pilha em si é alocada dinamicamente (em uma região conhecida também como \textit{heap}),
+e o vetor \texttt{elementos} faz parte desse espaço de armazenamento alocado.
 Conforme a especificação da linguagem C \parencite[seç.~7.24.3]{c23},
 o tempo de vida de uma memória alocada dinamicamente (precisamente, \textit{allocated storage duration})
 se estende até que ela seja explicitamente desalocada.
