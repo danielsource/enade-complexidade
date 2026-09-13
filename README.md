@@ -10,9 +10,9 @@ Arch Linux:
 
     pacman -S --needed biber texlive-bibtexextra texlive-binextra texlive-fontsrecommended texlive-langportuguese texlive-latex texlive-latexextra texlive-mathscience texlive-plaingeneric texlive-publishers
 
-Debian, Ubuntu, Mint (não testados):
+Debian:
 
-    apt install biber texlive-bibtex-extra texlive-binaries texlive-fonts-recommended texlive-lang-portuguese texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-science texlive-plain-generic texlive-publishers
+    apt install biber latexmk texlive-bibtex-extra texlive-fonts-recommended texlive-lang-portuguese texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-science texlive-plain-generic texlive-publishers
 
 
 Compilação para PDF
