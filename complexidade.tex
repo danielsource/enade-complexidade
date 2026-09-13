@@ -372,7 +372,7 @@ Desta forma, o valor final impresso pela função seria \texttt{10} em ambos os 
 A afirmação III é falsa. Na linha 8 da implementação da pilha (\texttt{malloc(sizeof(pilha))}),
 a estrutura da pilha em si é alocada dinamicamente (em uma região conhecida também como \textit{heap}),
 e o vetor \texttt{elementos} faz parte desse espaço de armazenamento alocado.
-Conforme a especificação da linguagem C \parencite[seç.~7.24.3]{c23},
+Conforme a especificação da linguagem C \parencite[seç.~7.24.3]{c2y},
 o tempo de vida de uma memória alocada dinamicamente (precisamente, \textit{allocated storage duration})
 se estende até que ela seja explicitamente desalocada.
 Por isso, a chamada à função \texttt{free(p)} não é opcional para evitar o vazamento de memória.
