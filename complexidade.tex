@@ -69,7 +69,7 @@
 \ordinalnum{1}[f] atividade da disciplina optativa ENADE-2026.2, do Professor Ricardo Azevedo Moreira da Silva.
 Este documento é destinado a estudantes de Ciência da Computação
 e contém um resumo de Complexidade de Algoritmos baseado nas questões objetivas (múltipla escolha)
-selecionadas das últimas três provas do \citefield{enade}{title}.
+selecionadas das três provas de 2014, 2017 e 2021 do \citefield{enade}{title}.
 
 \section{Contextualização}
 Analisar a eficiência é o foco central da disciplina de Complexidade de Algoritmos.
@@ -176,13 +176,13 @@ O \textit{Big-O} é mais comum de ser utilizado, e também por isso, é o mais c
 Podemos dizer que o pior caso do \textit{insertion sort} é $O(n^2)$, $O(n^3)$, ou $O(n!)$; tudo isso é verdade,
 pois essa notação apenas define o limite superior.
 Similarmente, a notação $\Omega$ (ou \textit{Big-Omega}) nos garante que uma função \emph{cresce pelo menos tão rápido} que uma certa taxa;
-ou seja, essa notação define o limite inferior \parencite[49--51,57]{clrs2022}.
+ou seja, essa notação define o limite inferior \parencite[49--51,56--57]{clrs2022}.
 
 É importante salientar que não podemos dizer, por exemplo, que ``o algoritmo \textit{insertion sort} \emph{é} $\Theta(n^2)$'',
 já que ``pior caso'' está omitido da frase; e assim, implicitamente estamos afirmando isso para todos os casos,
 o que é incorreto, pois no melhor caso temos $\Theta(n)$.
 Além disso, nem sempre é útil dizer que ``\textit{insertion sort} \emph{é} $O(n^2)$''; por mais que isso seja verdade,
-poderíamos ter usado qualquer outro $O(n^k)$ em que $k \ge 2$ \parencite[57]{clrs2022}.
+poderíamos ter usado qualquer outro $O(n^k)$ em que $k \ge 2$ \parencite[56--57]{clrs2022}.
 \pagebreak
 
 \subsection{Exemplos}
@@ -270,7 +270,7 @@ Agora, podemos afirmar que a asserção I é falsa,
 pois vimos que os algoritmos não possuem a mesma complexidade em todos os casos.
 A asserção II é verdadeira, pois ambos os algoritmos no melhor caso possuem complexidade limitada superiormente por $n$, ou seja, são $O(n)$.
 Como a asserção I é falsa, não temos a relação proposta (``asserção I porque asserção II'').
-Logo, eliminando todas as opções contraditórias, temos que D é a opção correta.\\
+Logo, eliminando todas as opções contraditórias, temos que D é a opção correta.
 
 \begin{question}{2014-16}
 Uma pilha é uma estrutura de dados que armazena uma coleção de itens de dados relacionados e que garante o seguinte funcionamento:
@@ -384,9 +384,9 @@ Enquanto problemas como o de caminho mínimo (Dijkstra%
 e de árvore geradora mínima (Prim/Kruskal%
 \footnote{Vídeo: \textit{How Do You Calculate a Minimum Spanning Tree?} (Canal Spanning Tree) --- \url{https://www.youtube.com/watch?v=Yldkh0aOEcg}})
 possuem soluções eficientes em tempo polinomial $O(n^k)$ (limite superior),
-um vasto conjunto de problemas de otimização é considerado intratável.
+um vasto conjunto de problemas de otimização é considerado intratável \parencite[cap.~21--22,34]{clrs2022}.
 Em termos fundamentais, um problema é dito intratável quando não possui nenhum algoritmo exato conhecido capaz de resolvê-lo em tempo polinomial
-para o pior caso, exigindo tempo de execução não polinomial ou exponencial (por exemplo, $\Theta(2^n)$ no pior caso).
+para o pior caso, exigindo tempo de execução não-polinomial ou exponencial (por exemplo, $\Theta(2^n)$ no pior caso).
 Segundo \textcite[cap.~34]{clrs2022}, temos as seguintes classes (dentre várias outras) que demonstram a diferença entre encontrar uma solução e verificar uma solução:
 \begin{itemize}
     \item Classe $P$ (\textit{polynomial time}):
@@ -411,17 +411,64 @@ Para mapear os problemas de forma mais precisa, definem-se os conceitos de $NP$-
 \end{itemize}
 
 Um exemplo clássico da categoria $NP$ é o Problema do Caixeiro Viajante (\textit{traveling-salesperson problem}~---~TSP).
-Na sua versão de decisão (``existe uma rota de custo no máximo $k$?''), o problema é $NP$-completo,
+Na sua versão de decisão (``existe uma rota de custo no máximo $k$?''), o problema é $NP$-completo (e, consequentemente, $NP$-difícil),
 pois basta somar as arestas da rota fornecida para verificar o certificado em tempo polinomial.
 Porém, na sua versão de otimização (``qual é a rota de menor custo absoluto?''),
-o problema é $NP$-difícil \parencite[1091--1092]{clrs2022}.
+o problema é apenas $NP$-difícil \parencite[seç.~34.5.4]{clrs2022}.
 
 A relevância prática dessa teoria reside no conceito de redução em tempo polinomial:
 se um problema do mundo real pode ser reduzido ao TSP, ele herda sua intratabilidade.
 Ao demonstrar que um problema é $NP$-difícil, pode-se interromper a busca por uma solução exata em tempo polinomial para o pior caso
 e adotar abordagens de aproximação ou heurísticas capazes de encontrar soluções satisfatórias em tempo viável \parencite[1045--1047,seç.~35.2]{clrs2022}.
 
-% TODO: 2014-22
+\subsection{Exemplos}
+Seguem agora questões resolvidas do Enade para elucidar o estudo das classes de complexidade.
+
+\begin{question}{2014-22}
+Considere o processo de fabricação de um produto siderúrgico que necessita passar por $n$ tratamentos térmicos e químicos para ficar pronto.
+Cada uma das $n$ etapas de tratamento é realizada uma única vez na mesma caldeira.
+Além do custo próprio de cada etapa do tratamento, existe o custo de se passar de uma etapa para outra, uma vez que, dependendo da sequência escolhida,
+pode ser necessário alterar a temperatura da caldeira e limpá-la para evitar a reação entre os produtos químicos utilizados.
+Assuma que o processo de fabricação inicia e termina com a caldeira limpa.
+Deseja-se projetar um algoritmo para indicar a sequência de tratamentos que possibilite fabricar o produto com o menor custo total.
+Nessa situação, conclui-se que
+
+\begin{spacing}{0.9}
+\begin{small}
+\begin{enumerate}[label=\Alph*)]
+    \item a solução do problema é obtida em tempo de ordem $O(n \log n)$, utilizando-se um algoritmo ótimo de ordenação.
+    \item uma heurística para a solução do problema de coloração de grafos solucionará o problema em tempo polinomial.
+    \item o problema se reduz a encontrar a árvore geradora mínima para o conjunto de etapas do processo,
+    requerendo tempo de ordem polinomial para ser solucionado.
+    \item a utilização do algoritmo de Dijkstra para se determinar o caminho de custo mínimo entre o estado inicial e o final soluciona o problema em tempo polinomial.
+    \item qualquer algoritmo conhecido para a solução do problema descrito possui ordem de complexidade de tempo não-polinomial,
+    uma vez que o problema do caixeiro viajante se reduz a ele.
+\end{enumerate}
+\end{small}
+\end{spacing}
+\end{question}
+
+O problema exige encontrar uma sequência de $n$ etapas em que cada uma é executada exatamente uma vez,
+minimizando o custo total de transição e retornando ao estado inicial. Essa descrição equivale ao Problema do Caixeiro Viajante (TSP).
+
+A opção A está incorreta.
+Algoritmos de ordenação organizam elementos por chave e não resolvem problemas de menor rota em grafos com custos nas transições \parencite[cap.~8]{clrs2022}.
+
+A opção B está incorreta.
+A coloração de grafos busca atribuir cores a vértices adjacentes e não encontra circuitos de menor custo \parencite[prob.~34-3]{clrs2022}.
+Além disso, heurísticas não garantem encontrar a solução ótima.
+
+A opção C está incorreta.
+A árvore geradora mínima conecta todos os vértices com o menor custo total,
+mas não impõe a restrição de formar um caminho simples que visita cada etapa exatamente uma vez \parencite[cap.~21]{clrs2022}.
+
+A opção D está incorreta.
+O algoritmo de Dijkstra calcula o caminho mínimo entre dois vértices,
+sem garantir que todos os demais $n$ vértices do grafo sejam visitados \parencite[cap.~22]{clrs2022}.
+
+A opção E está correta.
+Como o problema descrito se reduz ao TSP e pertence à classe NP-difícil na versão de otimização,
+qualquer algoritmo conhecido para resolvê-lo exige tempo de execução não-polinomial no pior caso \parencite[seç.~34.5.4]{clrs2022}.
 
 % TODO: 2014-28
 
