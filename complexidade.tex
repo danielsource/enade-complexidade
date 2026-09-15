@@ -93,6 +93,7 @@ com tarefas diversas executando em plano de fundo em um sistema operacional;
 esse teste é possível, porém volátil.
 
 \section{Modelo de computação}
+\label{sec:modelo}
 Dessa forma, precisamos utilizar um método que independa desses detalhes de implementação discutidos, mas nos dê informação suficiente:
 analisando a ideia ou a descrição abstrata em pseudocódigo, por exemplo.
 Para o propósito deste resumo, iremos nos basear numa simplificação do modelo computacional de \textcite[26]{clrs2022},
@@ -120,6 +121,7 @@ obtendo isto para \textit{Sum-Array} \parencite[29]{clrs2022}:
 \]
 
 \section{Análise por casos}
+\label{sec:casos}
 O exemplo anterior com \textit{Sum-Array} mostra que o tempo de execução ($T(n)$) pode depender do tamanho da entrada ($n$).
 Porém, existem algoritmos em que $T(n)$ também depende da própria configuração da entrada, por exemplo:
 \listtitle{Linear-Search(\texttt{A, n, k})}
@@ -141,6 +143,7 @@ o maior $T(n)$ para qualquer entrada de tamanho $n$.
 Ao encontrar esse pior caso, temos a garantia de que o algoritmo nunca vai demorar mais que isso.
 
 \section{Complexidade assintótica (\texorpdfstring{$O, \Theta, \Omega$}{O, Theta, Omega})}
+\label{sec:assintotica}
 O tipo de análise apresentada nas seções anteriores e a presente em \textcite[seç.~2.2]{clrs2022}
 ignora o custo de tempo real e, em vez disso, utiliza constantes $c_k$.
 Porém, podemos ter dificuldade em analisar algoritmos cada vez maiores e com mais casos possíveis usando essa abordagem.
@@ -512,9 +515,207 @@ Logo, eliminando todas as opções contraditórias, temos que A é a opção cor
 
 % TODO: 2014-30
 
-% TODO: 2017-25
+\section{Recorrências e Divisão e Conquista}\label{sec:recorrencia}
+Muitos algoritmos recursivos podem ser analisados por meio de uma \emph{recorrência}:
+uma equação que descreve o custo de um problema de tamanho $n$ em função do custo de subproblemas menores
+\parencite[cap.~4]{clrs2022}.
+Quando um algoritmo de divisão e conquista divide um problema de tamanho $n$ em $a$ subproblemas de tamanho $n/b$,
+gastando $f(n)$ de tempo para dividir o problema e combinar as soluções dos subproblemas,
+a recorrência resultante tem a forma $T(n) = aT(n/b) + f(n)$, chamada de \emph{recorrência mestre},
+que pode frequentemente ser resolvida com o método mestre \parencite[seç.~4.5]{clrs2022}.
 
-% TODO: 2017-33
+Outra ferramenta útil é a \emph{árvore de recursão}, na qual cada nó representa o custo de um subproblema;
+somando os custos de cada nível da árvore, e em seguida somando os custos de todos os níveis,
+obtém-se o custo total da recorrência \parencite[seç.~4.4]{clrs2022}.
+É importante notar que nem toda recorrência recursiva se enquadra na forma mestre:
+quando o tamanho do subproblema diminui apenas por uma \emph{quantidade} constante (como em $T(n-1)$),
+em vez de por um \emph{fator} constante (como em $T(n/2)$),
+a árvore de recursão tende a ter altura $\Theta(n)$, em vez de $\Theta(\log n)$;
+e, havendo mais de uma chamada recursiva por nível, isso costuma indicar um crescimento exponencial
+no número de folhas da árvore \parencite[seç.~4.1]{clrs2022}.
+
+\subsection{Exemplos}
+Seguem agora questões resolvidas do Enade para elucidar o estudo de recorrências e divisão e conquista.
+
+\begin{question}{2017-25}
+A sequência de Fibonacci é uma sequência de números inteiros que começa em 1, a que se segue 1,
+e na qual cada elemento subsequente é a soma dos dois elementos anteriores.
+A função \texttt{fib} a seguir calcula o $n$-ésimo elemento da sequência de Fibonacci:
+
+\medskip\noindent\begin{minipage}{\linewidth}
+\begin{Verbatim}[numbers=left]
+unsigned int fib(unsigned int n)
+{
+    if (n < 2)
+        return 1;
+    return fib(n - 2) + fib(n - 1);
+}
+\end{Verbatim}
+\medskip
+\end{minipage}
+
+\noindent
+Considerando a implementação acima, avalie as afirmações a seguir.
+
+\begin{enumerate}[label=\Roman*.]
+    \item A complexidade de tempo da função \texttt{fib} é exponencial no valor de $n$.
+    \item A complexidade de espaço da função \texttt{fib} é exponencial no valor de $n$.
+    \item É possível implementar uma versão iterativa da função \texttt{fib} com complexidade de tempo linear
+    no valor de $n$ e complexidade de espaço constante.
+\end{enumerate}
+
+\noindent
+É correto o que se afirma em
+
+\begin{spacing}{0.9}
+\begin{small}
+\begin{enumerate}[label=\Alph*)]
+    \item I, apenas.
+    \item II, apenas.
+    \item I e III, apenas.
+    \item II e III, apenas.
+    \item I, II e III.
+\end{enumerate}
+\end{small}
+\end{spacing}
+\end{question}
+
+Antes de avaliar as afirmações, é preciso montar a recorrência que descreve o tempo de execução de \texttt{fib}.
+Como o corpo da função faz um trabalho de custo constante e realiza duas chamadas recursivas,
+uma sobre $n-2$ e outra sobre $n-1$, a recorrência é
+\[
+    T(n) = T(n-1) + T(n-2) + \Theta(1).
+\]
+Vale notar, como discutido na análise do \textit{Algoritmo 2} da Questão 2014-12 (seção~\ref{sec:assintotica}),
+que \texttt{fib} não possui múltiplos casos a serem analisados separadamente:
+diferentemente do \textit{Linear-Search} (seção~\ref{sec:casos}), cujo tempo depende de \emph{onde} o valor buscado
+está no vetor, o tempo de \texttt{fib} depende exclusivamente do \emph{tamanho} $n$ da entrada,
+e não de valores específicos nela contidos. Por isso, é possível falar diretamente em $T(n)$,
+sem qualificar o resultado como ``melhor caso'' ou ``pior caso''.
+
+A afirmação I é verdadeira.
+Diferentemente das recorrências de divisão e conquista tratadas por \textcite[cap.~4]{clrs2022},
+em que o tamanho do subproblema é reduzido por um \emph{fator} constante (como em $n/2$),
+aqui o tamanho é reduzido apenas por uma \emph{quantidade} constante ($n-1$ e $n-2$).
+Esse é o mesmo padrão da recorrência da busca linear recursiva citada por \textcite[seç.~4.1]{clrs2022},
+$T(n) = T(n-1) + \Theta(1)$, cuja árvore de recursão tem altura $\Theta(n)$.
+No caso de \texttt{fib}, porém, cada chamada gera \emph{duas} novas chamadas (fator de ramificação 2),
+e a árvore de recursão tem altura proporcional a $n$.
+Uma árvore com fator de ramificação 2 e altura $\Theta(n)$ possui um número de folhas que cresce exponencialmente
+com $n$ (proporcional a $\varphi^n$, em que $\varphi$ é a razão áurea).
+Como cada folha custa $\Theta(1)$, o tempo total de execução é exponencial em $n$.
+Assim como no exemplo do polinômio de 50 linhas discutido na seção~\ref{sec:assintotica},
+o termo aditivo $\Theta(1)$ da recorrência é desprezível diante do crescimento exponencial das chamadas recursivas,
+não alterando a ordem de crescimento final.
+
+A afirmação II é falsa.
+A complexidade de espaço de uma função recursiva corresponde à profundidade máxima da pilha de chamadas
+em um dado instante, isto é, ao comprimento do caminho ativo na árvore de recursão~---~não ao número total de nós da árvore.
+Como as chamadas são feitas sequencialmente
+(a chamada \texttt{fib(n - 1)} é completamente resolvida, incluindo toda a sua subárvore,
+antes ou depois de \texttt{fib(n - 2)}, dependendo da ordem de avaliação),
+apenas um caminho da raiz até uma folha está ativo na pilha a cada momento.
+Esse caminho tem comprimento $\Theta(n)$.
+Logo, o espaço utilizado é linear, $\Theta(n)$, e não exponencial.
+
+A afirmação III é verdadeira.
+É possível calcular Fibonacci mantendo apenas os dois últimos valores calculados em variáveis auxiliares
+e atualizando-os a cada iteração de um laço que percorre de $2$ até $n$, sem qualquer recursão~---~de forma análoga
+ao laço de custo constante por iteração do \textit{Sum-Array} (seção~\ref{sec:modelo}).
+Essa abordagem elimina a recomputação repetida de subproblemas idênticos presente na versão recursiva,
+resultando em tempo $O(n)$ e espaço extra $O(1)$.
+
+Como as afirmações I e III são verdadeiras, e a II é falsa, temos que C é a opção correta.
+
+\begin{question}{2017-33}
+Considere a função recursiva F a seguir, que em sua execução chama a função G:
+
+\medskip\noindent\begin{minipage}{\linewidth}
+\begin{Verbatim}[numbers=left]
+void F(int n) {
+    if (n > 0) {
+        for (int i = 0; i < n; i++) {
+            G(i);
+        }
+        F(n/2);
+    }
+}
+\end{Verbatim}
+\medskip
+\end{minipage}
+
+\noindent
+Com base nos conceitos de teoria da complexidade, avalie as afirmações a seguir.
+
+\begin{enumerate}[label=\Roman*.]
+    \item A equação de recorrência que define a complexidade da função F é a mesma do algoritmo
+    clássico de ordenação \textit{mergesort}.
+    \item O número de chamadas recursivas da função F é $\Theta(\log n)$.
+    \item O número de vezes que a função G da linha 4 é chamada é $O(n \log n)$.
+\end{enumerate}
+
+\noindent
+É correto o que se afirma em
+
+\begin{spacing}{0.9}
+\begin{small}
+\begin{enumerate}[label=\Alph*)]
+    \item I, apenas.
+    \item II, apenas.
+    \item I e III, apenas.
+    \item II e III, apenas.
+    \item I, II e III.
+\end{enumerate}
+\end{small}
+\end{spacing}
+\end{question}
+
+Assim como no \textit{Sum-Array} (seção~\ref{sec:modelo}), em que um laço que itera $n$ vezes com custo constante
+por iteração contribui com um termo $\Theta(n)$ ao tempo total,
+o laço da linha 3 de F itera $n$ vezes chamando \texttt{G(i)} a custo constante por chamada, contribuindo com $\Theta(n)$.
+Somando esse custo ao da chamada recursiva da linha 6, a recorrência que descreve o tempo de execução de F é
+\[
+    T(n) = T(n/2) + \Theta(n).
+\]
+
+A afirmação I é falsa.
+Essa é uma recorrência mestre \parencite[seç.~4.5]{clrs2022} da forma $T(n) = aT(n/b) + f(n)$
+com $a = 1$ (apenas uma chamada recursiva) e $b = 2$.
+Já a recorrência do \textit{mergesort}, apresentada por \textcite[seç.~2.3.2]{clrs2022},
+é $T(n) = 2T(n/2) + \Theta(n)$, com $a = 2$ (duas chamadas recursivas).
+São recorrências estruturalmente diferentes~---~F ramifica em apenas um subproblema por chamada,
+enquanto o \textit{mergesort} ramifica em dois~---~e, consequentemente, têm soluções assintóticas diferentes:
+para F, a função \emph{watershed} do método mestre é $n^{\log_2 1} = n^0 = 1$;
+como $f(n) = \Theta(n)$ cresce polinomialmente mais rápido que essa \emph{watershed},
+aplica-se o caso~3 do teorema mestre, resultando em $T(n) = \Theta(n)$.
+Já para o \textit{mergesort}, a \emph{watershed} é $n^{\log_2 2} = n$,
+que coincide assintoticamente com $f(n) = \Theta(n)$, aplicando-se o caso~2, com solução $\Theta(n \log n)$.
+Note que, como discutido na seção~\ref{sec:assintotica} a respeito da ordem de crescimento,
+não basta observar que ambas as recorrências contêm um termo $\Theta(n)$: é a forma da recursão
+(o valor de $a$) que determina se a ordem de crescimento final é linear ou log-linear.
+
+A afirmação II é verdadeira.
+Assim como discutido por \textcite[seç.~4.4--4.5]{clrs2022} a respeito da altura de árvores de recursão,
+quando o tamanho do problema é dividido por um fator constante $b$ a cada chamada~---~no caso de F,
+o argumento é dividido por 2 (\texttt{F(n/2)})~---~o número de níveis de recursão necessários até o argumento
+atingir a condição de parada ($n > 0$ falso) é $\Theta(\log_b n) = \Theta(\log n)$.
+
+A afirmação III é verdadeira.
+Utilizando a técnica de árvore de recursão descrita por \textcite[seç.~4.4]{clrs2022},
+no nível $k$ da recursão (correspondente à chamada \texttt{F(n/2\^{}k)}) o laço da linha 3 realiza
+$\Theta(n/2^k)$ chamadas a G.
+Como há $\Theta(\log n)$ níveis (pela afirmação II), o número total de chamadas a G é majorado por
+\[
+    \sum_{k=0}^{\Theta(\log n)} \frac{n}{2^k} \;\le\; \Theta(\log n) \cdot n = O(n \log n).
+\]
+Esse é o mesmo tipo de raciocínio~---~somar o custo por nível e multiplicar pela altura da árvore~---~empregado
+por \textcite[seç.~4.4]{clrs2022} na análise da recorrência irregular $T(n) = T(n/3) + T(2n/3) + \Theta(n)$.
+Vale notar que essa cota, embora correta, não é a mais justa: como os termos formam uma série geométrica
+decrescente ($n + n/2 + n/4 + \dots$), o total real converge para $\Theta(n)$, que está contido em $O(n \log n)$~---~
+o mesmo cuidado sobre limites superiores frouxos discutido na seção~\ref{sec:assintotica} a respeito do \textit{insertion sort},
+que também admite ser descrito por $O(n^2)$, $O(n^3)$ etc., sem que essas cotas sejam as mais justas.
+
+Como as afirmações II e III são verdadeiras, e a I é falsa, temos que D é a opção correta.
 
 % TODO: 2021-20
 
