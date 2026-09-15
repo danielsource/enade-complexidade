@@ -32,7 +32,6 @@
 
 % hypertext
 \usepackage{hyperref}
-\usepackage{needspace}
 \hypersetup{
     colorlinks=true,
     urlcolor=[RGB]{0, 0, 130},
@@ -527,16 +526,13 @@ como a ordem crescente ou decrescente.
 Diferentes estratégias podem ser utilizadas para realizar essa tarefa,
 apresentando custos computacionais distintos em função do tamanho e das características da entrada.
 
-\Needspace{30\baselineskip}
 \subsection{Exemplos}
-
-A seguir, serão apresentadas questões do ENADE que envolvem os algoritmos de busca e ordenação.
+Seguem agora questões resolvidas do Enade que envolvem os algoritmos de busca e ordenação.
 
 \begin{question}{2021-20}
 Observe o código abaixo escrito na linguagem C.
 
-\medskip\noindent
-\begin{minipage}{\linewidth}
+\medskip\noindent\begin{minipage}{\linewidth}
 \begin{Verbatim}[numbers=left]
 #include <stdio.h>
 #define TAM 10
@@ -565,8 +561,8 @@ int main(){
     return 0;
 }
 \end{Verbatim}
+\medskip
 \end{minipage}
-
 
 A respeito das funções implementadas, avalie as afirmações a seguir.
 
@@ -600,20 +596,16 @@ Na primeira chamada, \texttt{m = (0 + 9) / 2 = 4} (divisão inteira), e como \te
 a função é chamada novamente com \texttt{i = 5} e \texttt{f = 9}.
 Nessa segunda chamada, \texttt{m = (5 + 9) / 2 = 7}, e como \texttt{vetor[7] = 15} é igual ao valor buscado,
 a função retorna \texttt{7}. Assim, a impressão na linha 24 é de fato \texttt{7 - 7}.
- 
+
 A afirmação II é falsa. A busca sequencial da \texttt{funcao1} possui complexidade $O(n)$ no pior caso,
 pois pode ser necessário percorrer todos os \texttt{TAM} elementos do vetor até encontrar (ou não) o valor procurado.
 Já a busca binária da \texttt{funcao2}, por descartar metade do espaço de busca a cada chamada recursiva,
 possui complexidade $O(\log n)$ no pior caso. Portanto, no pior caso, é a \texttt{funcao2} que constitui a estratégia mais rápida, e não a \texttt{funcao1}.
-% TODO: Adicionar Citação 
 A afirmação III é falsa. A \texttt{funcao2} chama a si mesma nas linhas 18 e 20 (\texttt{return funcao2(...)}),
 caracterizando uma estratégia \emph{recursiva} de busca binária, e não iterativa (que exigiria o uso de um laço de repetição, como \texttt{for} ou \texttt{while}).
 Como apenas a afirmação I está correta, temos que A é a opção correta.
- 
-% Questão 2021-32
- 
+
 % TODO: 2021-32
- 
+
 \printbibliography[heading=bibintoc]
 \end{document}
- 
