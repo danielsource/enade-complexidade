@@ -43,17 +43,18 @@
 
 \newenvironment{question}[1]{%
     \pdfbookmark[3]{Questão #1}{q:#1}
-    \par\medskip\noindent
+    \bigskip\par\noindent
     \textbf{Questão #1} \dotfill
-    \par\medskip\nopagebreak\noindent
+    \medskip\par\nopagebreak\noindent
     \ignorespaces
 }{%
     \noindent\dotfill\medskip
 }
 
 \newcommand{\listtitle}[1]{%
-    \par\medskip\noindent
-    {\small\textbf{\underline{#1:}}}
+    \medskip\par\noindent
+    {\small\textbf{\underline{#1:}}}%
+    \par\nopagebreak\noindent
 }
 
 \renewcommand{\theFancyVerbLine}{\ttfamily\color{gray}\arabic{FancyVerbLine}}
@@ -184,7 +185,7 @@ já que ``pior caso'' está omitido da frase; e assim, implicitamente estamos af
 o que é incorreto, pois no melhor caso temos $\Theta(n)$.
 Além disso, nem sempre é útil dizer que ``\textit{insertion sort} \emph{é} $O(n^2)$''; por mais que isso seja verdade,
 poderíamos ter usado qualquer outro $O(n^k)$ em que $k \ge 2$ \parencite[56--57]{clrs2022}.
-\pagebreak
+\newpage
 
 \subsection{Exemplos}
 Seguem agora questões resolvidas do Enade para elucidar a análise de complexidade assintótica.
@@ -379,7 +380,7 @@ se estende até que ela seja explicitamente desalocada.
 Por isso, a chamada à função \texttt{free(p)} não é opcional para evitar o vazamento de memória.
 Como apenas as afirmações I e II estão corretas, temos que C é a opção correta.
 
-\section{Classes de Complexidade}
+\section{Classes de Complexidade}\label{sec:class}
 Enquanto problemas como o de caminho mínimo (Dijkstra%
 \footnote{Vídeo: \textit{How Dijkstra's Algorithm Works} (Canal Spanning Tree) --- \url{https://www.youtube.com/watch?v=EFg3u_E6eHU}})
 e de árvore geradora mínima (Prim/Kruskal%
@@ -400,7 +401,7 @@ Segundo \textcite[cap.~34]{clrs2022}, temos as seguintes classes (dentre várias
 \end{itemize}
 Para mapear os problemas de forma mais precisa, definem-se os conceitos de $NP$-completo e $NP$-difícil:
 \begin{itemize}
-    \item $NP$-completo:
+    \item $NP$-completo:\label{it:npc}
     São os problemas mais difíceis dentro da classe $NP$.
     Um problema é $NP$-completo se ele pertence a $NP$ e qualquer outro problema de $NP$ pode ser reduzido a ele em tempo polinomial.
     Intuitivamente, eles representam uma ``ponte universal'': se um único problema $NP$-completo for resolvido em tempo polinomial
@@ -468,10 +469,47 @@ O algoritmo de Dijkstra calcula o caminho mínimo entre dois vértices,
 sem garantir que todos os demais $n$ vértices do grafo sejam visitados \parencite[cap.~22]{clrs2022}.
 
 A opção E está correta.
-Como o problema descrito se reduz ao TSP e pertence à classe NP-difícil na versão de otimização,
+Como o problema descrito se reduz ao TSP e pertence à classe $NP$-difícil na versão de otimização,
 qualquer algoritmo conhecido para resolvê-lo exige tempo de execução não-polinomial no pior caso \parencite[seç.~34.5.4]{clrs2022}.
 
-% TODO: 2014-28
+\begin{question}{2014-28}
+Um cientista afirma ter encontrado uma redução polinomial de um problema $NP$-completo para um problema pertencente à classe $P$.
+Considerando que esta afirmação tem implicações importantes no que diz respeito à complexidade computacional,
+avalie as seguintes asserções e a relação proposta entre elas.
+
+\begin{enumerate}[label=\Roman*.]
+    \item A descoberta do cientista implica $P = NP$.
+\end{enumerate}
+
+\begin{center}
+    \textbf{PORQUE}
+\end{center}
+
+\begin{enumerate}[label=\Roman*., start=2]
+    \item A descoberta do cientista implica na existência de algoritmos polinomiais para todos os problemas $NP$-completos.
+\end{enumerate}
+
+\noindent
+A respeito dessas asserções, assinale a opção correta.
+
+\begin{spacing}{0.9}
+\begin{small}
+\begin{enumerate}[label=\Alph*)]
+    \item As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.
+    \item As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.
+    \item A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.
+    \item A asserção I é uma proposição falsa, e a II é uma proposição verdadeira.
+    \item As asserções I e II são proposições falsas.
+\end{enumerate}
+\end{small}
+\end{spacing}
+\end{question}
+
+Conforme apresentado na seção~\ref{sec:class} (página~\pageref{it:npc}),
+se um problema $NP$-completo pode ser reduzido e resolvido em tempo polinomial ($P$),
+todos os demais problemas em $NP$ também terão solução polinomial (Asserção II verdadeira),
+o que implica que $P = NP$ (Asserção I verdadeira).
+Logo, eliminando todas as opções contraditórias, temos que A é a opção correta.
 
 % TODO: 2014-30
 
