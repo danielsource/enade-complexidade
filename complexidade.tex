@@ -6,7 +6,6 @@
 \usepackage[brazilian]{babel}
 
 % misc
-\usepackage{fmtcount}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{enumitem}
 \usepackage{fancyvrb}
@@ -45,6 +44,7 @@
 
 \newenvironment{question}[1]{%
     \pdfbookmark[3]{Questão #1}{q:#1}
+    \label{q:#1}
     \bigskip\par\noindent
     \textbf{Questão #1} \dotfill
     \medskip\par\nopagebreak\noindent
@@ -70,7 +70,7 @@
 
 \begin{document}
 \maketitle
-\ordinalnum{1}[f] atividade da disciplina optativa ENADE-2026.2, do Professor Ricardo Azevedo Moreira da Silva.
+1ª atividade da disciplina optativa ENADE-2026.2, do Professor Ricardo Azevedo Moreira da Silva.
 Este documento é destinado a estudantes de Ciência da Computação
 e contém um resumo de Complexidade de Algoritmos baseado nas questões objetivas (múltipla escolha)
 selecionadas das três provas de 2014, 2017 e 2021 do \citefield{enade}{title}.
@@ -95,7 +95,7 @@ com algum compilador ou interpretador, usando bibliotecas específicas,
 com tarefas diversas executando em plano de fundo em um sistema operacional;
 esse teste é possível, porém volátil.
 
-\section{Modelo de computação}
+\section{Modelo de computação}\label{sec:modelo}
 Dessa forma, precisamos utilizar um método que independa desses detalhes de implementação discutidos, mas nos dê informação suficiente:
 analisando a ideia ou a descrição abstrata em pseudocódigo, por exemplo.
 Para o propósito deste resumo, iremos nos basear numa simplificação do modelo computacional de \textcite[26]{clrs2022},
@@ -122,7 +122,7 @@ obtendo isto para \textit{Sum-Array} \parencite[29]{clrs2022}:
     T(n) = c_1 + c_2(n + 1) + c_3n + c_4.
 \]
 
-\section{Análise por casos}
+\section{Análise por casos}\label{sec:casos}
 O exemplo anterior com \textit{Sum-Array} mostra que o tempo de execução ($T(n)$) pode depender do tamanho da entrada ($n$).
 Porém, existem algoritmos em que $T(n)$ também depende da própria configuração da entrada, por exemplo:
 \listtitle{Linear-Search(\texttt{A, n, k})}
@@ -143,7 +143,7 @@ Conforme \textcite[31]{clrs2022}, geralmente nos concentramos em achar apenas o 
 o maior $T(n)$ para qualquer entrada de tamanho $n$.
 Ao encontrar esse pior caso, temos a garantia de que o algoritmo nunca vai demorar mais que isso.
 
-\section{Complexidade assintótica (\texorpdfstring{$O, \Theta, \Omega$}{O, Theta, Omega})}
+\section{Complexidade assintótica (\texorpdfstring{$O, \Theta, \Omega$}{O, Theta, Omega})}\label{sec:assintotica}
 O tipo de análise apresentada nas seções anteriores e a presente em \textcite[seç.~2.2]{clrs2022}
 ignora o custo de tempo real e, em vez disso, utiliza constantes $c_k$.
 Porém, podemos ter dificuldade em analisar algoritmos cada vez maiores e com mais casos possíveis usando essa abordagem.
@@ -264,7 +264,7 @@ o laço interno (linhas 5--7) executará $i - 1$ vezes (a partir do momento em q
 dessa forma, esse caso demonstra um laço aninhado com complexidade quadrática, ou $\Theta(n^2)$.
 
 O Algoritmo 1 no melhor caso é $\Theta(n)$, pois teremos uma entrada com apenas um coeficiente diferente de zero ($a_n$);
-e baseado no caso anterior, o laço interno (linhas 5--7) nunca será executado;
+e baseado no caso anterior, o laço interno (linhas 5--7) será executado apenas quando $i = n$;
 dessa forma, esse caso demonstra um laço com complexidade linear, ou $\Theta(n)$.
 
 O Algoritmo 2 é mais eficiente e não possui múltiplos casos, já que, independentemente da entrada,
@@ -441,6 +441,273 @@ se estende até que ela seja explicitamente desalocada.
 Por isso, a chamada à função \texttt{free(p)} não é opcional para evitar o vazamento de memória.
 Como apenas as afirmações I e II estão corretas, temos que C é a opção correta.
 
+\section{Algoritmos de Busca e de Ordenação}
+Os algoritmos de busca são utilizados para localizar um determinado elemento em uma coleção de dados.
+Dependendo da estratégia utilizada, o custo computacional pode variar significativamente em função do tamanho da entrada.
+
+Os algoritmos de ordenação, por sua vez, têm como objetivo organizar os elementos de uma coleção de dados de acordo com um determinado critério,
+como a ordem crescente ou decrescente.
+Diferentes estratégias podem ser utilizadas para realizar essa tarefa,
+apresentando custos computacionais distintos em função do tamanho e das características da entrada.
+
+\subsection{Exemplos}
+Seguem agora questões resolvidas do Enade que envolvem os algoritmos de busca e ordenação.
+
+\begin{question}{2021-20}
+Observe o código abaixo escrito na linguagem C.
+
+\begin{Verbatim}[numbers=left]
+#include <stdio.h>
+#define TAM 10
+int funcao1(int vetor[], int v){
+    int i;
+    for (i = 0; i < TAM; i++){
+        if (vetor[i] == v)
+            return i;
+    }
+    return -1;
+}
+\end{Verbatim}
+\newpage
+
+\begin{Verbatim}[numbers=left,firstnumber=last]
+int funcao2(int vetor[], int v, int i, int f){
+    int m = (i + f) / 2;
+    if (v == vetor[m])
+        return m;
+    if (i >= f)
+        return -1;
+    if (v > vetor[m])
+        return funcao2(vetor, v, m+1, f);
+    else
+        return funcao2(vetor, v, i, m-1);
+}
+int main(){
+    int vetor[TAM] = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
+    printf("%d - %d", funcao1(vetor, 15), funcao2(vetor, 15, 0, TAM-1));
+    return 0;
+}
+\end{Verbatim}
+
+A respeito das funções implementadas, avalie as afirmações a seguir.
+
+\begin{enumerate}[label=\Roman*.]
+    \item O resultado da impressão na linha 24 é: 7 - 7.
+    \item A função \texttt{funcao1}, no pior caso, é uma estratégia mais rápida do que a \texttt{funcao2}.
+    \item A função \texttt{funcao2} implementa uma estratégia iterativa na concepção do algoritmo.
+\end{enumerate}
+
+\noindent
+É correto o que se afirma em
+
+\begin{spacing}{0.9}
+\begin{small}
+\begin{enumerate}[label=\Alph*)]
+    \item I, apenas.
+    \item III, apenas.
+    \item I e II, apenas.
+    \item II e III, apenas.
+    \item I, II e III.
+\end{enumerate}
+\end{small}
+\end{spacing}
+\end{question}
+
+A afirmação I é verdadeira. A \texttt{funcao1} implementa uma busca sequencial (linear),
+percorrendo o vetor \texttt{\{1, 3, 5, 7, 9, 11, 13, 15, 17, 19\}} do índice \texttt{0} até encontrar o valor \texttt{15},
+que está armazenado no índice \texttt{7}; logo, \texttt{funcao1(vetor, 15)} retorna \texttt{7}.
+Já a \texttt{funcao2} implementa uma busca binária recursiva, iniciada com \texttt{i = 0} e \texttt{f = TAM-1 = 9}.
+Na primeira chamada, \texttt{m = (0 + 9) / 2 = 4} (divisão inteira), e como \texttt{vetor[4] = 9} é menor que \texttt{15},
+a função é chamada novamente com \texttt{i = 5} e \texttt{f = 9}.
+Nessa segunda chamada, \texttt{m = (5 + 9) / 2 = 7}, e como \texttt{vetor[7] = 15} é igual ao valor buscado,
+a função retorna \texttt{7}. Assim, a impressão na linha 24 é de fato \texttt{7 - 7}.
+
+A afirmação II é falsa. A busca sequencial da \texttt{funcao1} possui complexidade $O(n)$ no pior caso,
+pois pode ser necessário percorrer todos os \texttt{TAM} elementos do vetor até encontrar (ou não) o valor procurado.
+Já a busca binária da \texttt{funcao2}, por descartar metade do espaço de busca a cada chamada recursiva,
+possui complexidade $O(\log n)$ no pior caso. Portanto, no pior caso, é a \texttt{funcao2} que constitui a estratégia mais rápida, e não a \texttt{funcao1}.
+A afirmação III é falsa. A \texttt{funcao2} chama a si mesma nas linhas 18 e 20 (\texttt{return funcao2(...)}),
+caracterizando uma estratégia \emph{recursiva} de busca binária, e não iterativa (que exigiria o uso de um laço de repetição, como \texttt{for} ou \texttt{while}).
+Como apenas a afirmação I está correta, temos que A é a opção correta.
+
+% TODO: 2021-32
+
+\section{Recorrências e Divisão e Conquista}\label{sec:recorrencia}
+Muitos algoritmos recursivos podem ser analisados por meio de uma \emph{recorrência}:
+uma equação que descreve o custo de um problema de tamanho $n$ em função do custo de subproblemas menores
+\parencite[cap.~4]{clrs2022}.
+Quando um algoritmo de divisão e conquista divide um problema de tamanho $n$ em $a$ subproblemas de tamanho $n/b$ (com $a > 0, b > 1$),
+gastando $f(n)$ de tempo para dividir o problema e combinar as soluções dos subproblemas,
+a recorrência resultante tem a forma $T(n) = aT(n/b) + f(n)$, chamada de \emph{recorrência mestre},
+que pode frequentemente ser resolvida com o método mestre \parencite[seç.~4.5]{clrs2022}.
+
+Outra ferramenta útil é a \emph{árvore de recursão}, na qual cada nó representa o custo de um subproblema;
+somando os custos de cada nível da árvore, e em seguida somando os custos de todos os níveis,
+obtém-se o custo total da recorrência \parencite[seç.~4.4]{clrs2022}.
+É importante notar que nem toda recorrência recursiva se enquadra na forma mestre:
+quando o tamanho do subproblema diminui apenas por uma quantidade constante (como em $T(n-1)$),
+em vez de por um fator constante (como em $T(n/2)$),
+a árvore de recursão tende a ter altura $\Theta(n)$, em vez de $\Theta(\log n)$;
+e, havendo mais de uma chamada recursiva por nível, isso costuma indicar um crescimento exponencial
+no número de folhas da árvore \parencite[cap.~4]{clrs2022}.
+\newpage
+
+\subsection{Exemplos}
+Seguem agora questões resolvidas do Enade para elucidar o estudo de recorrências e divisão e conquista.
+
+\begin{question}{2017-25}
+A sequência de Fibonacci é uma sequência de números inteiros que começa em 1, a que se segue 1,
+e na qual cada elemento subsequente é a soma dos dois elementos anteriores.
+A função \texttt{fib} a seguir calcula o $n$-ésimo elemento da sequência de Fibonacci:
+
+\medskip\noindent\begin{minipage}{\linewidth}
+\begin{Verbatim}[numbers=left]
+unsigned int fib(unsigned int n)
+{
+    if (n < 2)
+        return 1;
+    return fib(n - 2) + fib(n - 1);
+}
+\end{Verbatim}
+\medskip
+\end{minipage}
+
+\noindent
+Considerando a implementação acima, avalie as afirmações a seguir.
+
+\begin{enumerate}[label=\Roman*.]
+    \item A complexidade de tempo da função \texttt{fib} é exponencial no valor de $n$.
+    \item A complexidade de espaço da função \texttt{fib} é exponencial no valor de $n$.
+    \item É possível implementar uma versão iterativa da função \texttt{fib} com complexidade de tempo linear
+    no valor de $n$ e complexidade de espaço constante.
+\end{enumerate}
+
+\noindent
+É correto o que se afirma em
+
+\begin{spacing}{0.9}
+\begin{small}
+\begin{enumerate}[label=\Alph*)]
+    \item I, apenas.
+    \item II, apenas.
+    \item I e III, apenas.
+    \item II e III, apenas.
+    \item I, II e III.
+\end{enumerate}
+\end{small}
+\end{spacing}
+\end{question}
+
+Antes de avaliar as afirmações, é preciso montar a recorrência que descreve o tempo de execução de \texttt{fib}.
+Como o corpo da função faz um trabalho de custo constante e realiza duas chamadas recursivas,
+uma sobre $n-2$ e outra sobre $n-1$, a recorrência é
+\[
+    T(n) = T(n-1) + T(n-2) + \Theta(1).
+\]
+Vale notar, como discutido na análise do Algoritmo 2 da Questão 2014-12 (página~\pageref{q:2014-12}),
+que \texttt{fib} não possui múltiplos casos a serem analisados separadamente:
+diferentemente do \textit{Linear-Search} (seção~\ref{sec:casos}), cujo tempo depende de onde o valor buscado
+está no vetor, o tempo de \texttt{fib} depende exclusivamente do tamanho $n$ da entrada,
+e não de valores específicos nela contidos. Por isso, é possível falar diretamente em $T(n)$,
+sem qualificar o resultado como ``melhor caso'' ou ``pior caso''.
+
+A afirmação I é verdadeira.
+Diferentemente das recorrências de divisão e conquista tratadas por \textcite[cap.~4]{clrs2022},
+em que o tamanho do subproblema é reduzido por um fator constante (como em $n/2$),
+aqui o tamanho é reduzido apenas por uma quantidade constante ($n-1$ e $n-2$).
+Esse é o mesmo padrão da recorrência da busca linear recursiva citada por \textcite[cap.~4]{clrs2022},
+$T(n) = T(n-1) + \Theta(1)$, cuja árvore de recursão tem altura $\Theta(n)$.
+No caso de \texttt{fib}, porém, cada chamada gera duas novas chamadas (fator de ramificação 2),
+e a árvore de recursão tem altura proporcional a $n$.
+Uma árvore com fator de ramificação 2 e altura $\Theta(n)$ possui um número de folhas que cresce exponencialmente
+com $n$ (proporcional a $\varphi^n$, em que $\varphi$ é a razão áurea).
+Como cada folha custa $\Theta(1)$, o tempo total de execução é exponencial em $n$.
+
+A afirmação II é falsa.
+A complexidade de espaço de uma função recursiva corresponde à profundidade máxima da pilha de chamadas
+em um dado instante, isto é, ao comprimento do caminho ativo na árvore de recursão~---~não ao número total de nós da árvore.
+Como as chamadas são feitas sequencialmente
+(a chamada \texttt{fib(n - 1)} é completamente resolvida, incluindo toda a sua subárvore,
+antes ou depois de \texttt{fib(n - 2)}, dependendo da ordem de avaliação),
+apenas um caminho da raiz até uma folha está ativo na pilha a cada momento.
+Esse caminho tem comprimento $\Theta(n)$.
+Logo, o espaço utilizado é linear, $\Theta(n)$, e não exponencial.
+
+A afirmação III é verdadeira.
+É possível calcular Fibonacci mantendo apenas os dois últimos valores calculados em variáveis auxiliares
+e atualizando-os a cada iteração de um laço que percorre de $2$ até $n$, sem qualquer recursão~---~de forma análoga
+ao laço de custo constante por iteração do \textit{Sum-Array} (seção~\ref{sec:modelo}).
+Essa abordagem elimina a recomputação repetida de subproblemas idênticos presente na versão recursiva,
+resultando em tempo $\Theta(n)$ e espaço extra $\Theta(1)$.
+Como as afirmações I e III são verdadeiras, e a II é falsa, temos que C é a opção correta.
+\newpage
+
+\begin{question}{2017-33}
+Considere a função recursiva F a seguir, que em sua execução chama a função G:
+
+\medskip\noindent\begin{minipage}{\linewidth}
+\begin{Verbatim}[numbers=left]
+void F(int n) {
+    if (n > 0) {
+        for (int i = 0; i < n; i++) {
+            G(i);
+        }
+        F(n/2);
+    }
+}
+\end{Verbatim}
+\medskip
+\end{minipage}
+
+\noindent
+Com base nos conceitos de teoria da complexidade, avalie as afirmações a seguir.
+
+\begin{enumerate}[label=\Roman*.]
+    \item A equação de recorrência que define a complexidade da função F é a mesma do algoritmo
+    clássico de ordenação \textit{mergesort}.
+    \item O número de chamadas recursivas da função F é $\Theta(\log n)$.
+    \item O número de vezes que a função G da linha 4 é chamada é $O(n \log n)$.
+\end{enumerate}
+
+\noindent
+É correto o que se afirma em
+
+\begin{spacing}{0.9}
+\begin{small}
+\begin{enumerate}[label=\Alph*)]
+    \item I, apenas.
+    \item II, apenas.
+    \item I e III, apenas.
+    \item II e III, apenas.
+    \item I, II e III.
+\end{enumerate}
+\end{small}
+\end{spacing}
+\end{question}
+
+A afirmação I é falsa.
+O algoritmo \textit{mergesort} clássico divide o problema em duas metades e resolve ambas recursivamente,
+o que gera a recorrência mestre $T(n) = 2T(n/2) + \Theta(n)$ \parencite[seç.~4.5]{clrs2022}.
+Já a função \texttt{F} faz apenas uma chamada recursiva passando $n/2$,
+resultando em uma recorrência diferente: $T(n) = T(n/2) + \Theta(n)$.
+
+A afirmação II é verdadeira.
+A cada execução recursiva, o tamanho da entrada $n$ é reduzido pela metade ($n, n/2, n/4, \dots, 1$).
+O número de vezes que podemos dividir $n$ sucessivamente por $2$ até atingir a condição de parada ($0$)
+é equivalente ao logaritmo na base $2$ de $n$.
+Portanto, a árvore de recursão é um caminho único de profundidade $\Theta(\log n)$, resultando nesse exato número de chamadas.
+
+A afirmação III é verdadeira.
+Para descobrir o total exato de chamadas à função \texttt{G},
+precisamos somar o número de iterações do laço \texttt{for} em todos os níveis da recursão:
+no primeiro nível, $n$ vezes; no segundo, $n/2$ vezes; no terceiro, $n/4$, e assim por diante.
+Essa soma forma uma série geométrica ($n + n/2 + n/4 + \dots$) que converge para $\Theta(n)$ \parencite[seç.~A.1]{clrs2022}.
+Porém, conforme discutido na seção~\ref{sec:assintotica}, a notação $O$ (\textit{Big-O}) estabelece apenas um limite superior.
+Se a função cresce linearmente e é limitada por $n$,
+ela inevitavelmente também é limitada por um limite mais folgado como $n \log n$.
+Portanto, dizer que é $O(n \log n)$ é correto.
+Como as afirmações II e III estão corretas, temos que D é a opção correta.
+
 \section{Classes de Complexidade}\label{sec:class}
 Enquanto problemas como o de caminho mínimo (Dijkstra%
 \footnote{Vídeo: \textit{How Dijkstra's Algorithm Works} (Canal Spanning Tree) --- \url{https://www.youtube.com/watch?v=EFg3u_E6eHU}})
@@ -611,100 +878,6 @@ A opção D está incorreta, pois o algoritmo de Dijkstra é utilizado para enco
 
 A opção E está incorreta. A criação do conjunto $D$ é realmente a parte de maior custo do algoritmo, mas o processo de criar as combinações de pontos tem complexidade $O(n^2)$, e não $O(n!)$, visto que a ordem dos pares não importa — ou seja, $(A, B)$ ou $(B, A)$ —, logo o número de combinações é dado por $C(n+1, 2) = \frac{(n+1)!}{2!(n-1)!} = \frac{(n+1)n}{2} = O(n^2)$.
 Portanto, a opção correta é a letra A.
-
-% TODO: 2017-25
-
-% TODO: 2017-33
-
-\newpage
-
-\section{Algoritmos de Busca e de Ordenação}
-
-Os algoritmos de busca são utilizados para localizar um determinado elemento em uma coleção de dados.
-Dependendo da estratégia utilizada, o custo computacional pode variar significativamente em função do tamanho da entrada.
-
-Os algoritmos de ordenação, por sua vez, têm como objetivo organizar os elementos de uma coleção de dados de acordo com um determinado critério,
-como a ordem crescente ou decrescente.
-Diferentes estratégias podem ser utilizadas para realizar essa tarefa,
-apresentando custos computacionais distintos em função do tamanho e das características da entrada.
-
-\subsection{Exemplos}
-Seguem agora questões resolvidas do Enade que envolvem os algoritmos de busca e ordenação.
-
-\begin{question}{2021-20}
-Observe o código abaixo escrito na linguagem C.
-
-\begin{Verbatim}[numbers=left]
-#include <stdio.h>
-#define TAM 10
-int funcao1(int vetor[], int v){
-    int i;
-    for (i = 0; i < TAM; i++){
-        if (vetor[i] == v)
-            return i;
-    }
-    return -1;
-}
-int funcao2(int vetor[], int v, int i, int f){
-    int m = (i + f) / 2;
-    if (v == vetor[m])
-        return m;
-    if (i >= f)
-        return -1;
-    if (v > vetor[m])
-        return funcao2(vetor, v, m+1, f);
-    else
-        return funcao2(vetor, v, i, m-1);
-}
-int main(){
-    int vetor[TAM] = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
-    printf("%d - %d", funcao1(vetor, 15), funcao2(vetor, 15, 0, TAM-1));
-    return 0;
-}
-\end{Verbatim}
-
-A respeito das funções implementadas, avalie as afirmações a seguir.
-
-\begin{enumerate}[label=\Roman*.]
-    \item O resultado da impressão na linha 24 é: 7 - 7.
-    \item A função \texttt{funcao1}, no pior caso, é uma estratégia mais rápida do que a \texttt{funcao2}.
-    \item A função \texttt{funcao2} implementa uma estratégia iterativa na concepção do algoritmo.
-\end{enumerate}
-
-\noindent
-É correto o que se afirma em
-
-\begin{spacing}{0.9}
-\begin{small}
-\begin{enumerate}[label=\Alph*)]
-    \item I, apenas.
-    \item III, apenas.
-    \item I e II, apenas.
-    \item II e III, apenas.
-    \item I, II e III.
-\end{enumerate}
-\end{small}
-\end{spacing}
-\end{question}
-
-A afirmação I é verdadeira. A \texttt{funcao1} implementa uma busca sequencial (linear),
-percorrendo o vetor \texttt{\{1, 3, 5, 7, 9, 11, 13, 15, 17, 19\}} do índice \texttt{0} até encontrar o valor \texttt{15},
-que está armazenado no índice \texttt{7}; logo, \texttt{funcao1(vetor, 15)} retorna \texttt{7}.
-Já a \texttt{funcao2} implementa uma busca binária recursiva, iniciada com \texttt{i = 0} e \texttt{f = TAM-1 = 9}.
-Na primeira chamada, \texttt{m = (0 + 9) / 2 = 4} (divisão inteira), e como \texttt{vetor[4] = 9} é menor que \texttt{15},
-a função é chamada novamente com \texttt{i = 5} e \texttt{f = 9}.
-Nessa segunda chamada, \texttt{m = (5 + 9) / 2 = 7}, e como \texttt{vetor[7] = 15} é igual ao valor buscado,
-a função retorna \texttt{7}. Assim, a impressão na linha 24 é de fato \texttt{7 - 7}.
-
-A afirmação II é falsa. A busca sequencial da \texttt{funcao1} possui complexidade $O(n)$ no pior caso,
-pois pode ser necessário percorrer todos os \texttt{TAM} elementos do vetor até encontrar (ou não) o valor procurado.
-Já a busca binária da \texttt{funcao2}, por descartar metade do espaço de busca a cada chamada recursiva,
-possui complexidade $O(\log n)$ no pior caso. Portanto, no pior caso, é a \texttt{funcao2} que constitui a estratégia mais rápida, e não a \texttt{funcao1}.
-A afirmação III é falsa. A \texttt{funcao2} chama a si mesma nas linhas 18 e 20 (\texttt{return funcao2(...)}),
-caracterizando uma estratégia \emph{recursiva} de busca binária, e não iterativa (que exigiria o uso de um laço de repetição, como \texttt{for} ou \texttt{while}).
-Como apenas a afirmação I está correta, temos que A é a opção correta.
-
-% TODO: 2021-32
 
 \printbibliography[heading=bibintoc]
 \end{document}
