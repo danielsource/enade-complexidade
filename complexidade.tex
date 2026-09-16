@@ -45,17 +45,18 @@
 
 \newenvironment{question}[1]{%
     \pdfbookmark[3]{Questão #1}{q:#1}
-    \par\medskip\noindent
+    \bigskip\par\noindent
     \textbf{Questão #1} \dotfill
-    \par\medskip\nopagebreak\noindent
+    \medskip\par\nopagebreak\noindent
     \ignorespaces
 }{%
     \noindent\dotfill\medskip
 }
 
 \newcommand{\listtitle}[1]{%
-    \par\medskip\noindent
-    {\small\textbf{\underline{#1:}}}
+    \medskip\par\noindent
+    {\small\textbf{\underline{#1:}}}%
+    \par\nopagebreak\noindent
 }
 
 \renewcommand{\theFancyVerbLine}{\ttfamily\color{gray}\arabic{FancyVerbLine}}
@@ -186,7 +187,7 @@ já que ``pior caso'' está omitido da frase; e assim, implicitamente estamos af
 o que é incorreto, pois no melhor caso temos $\Theta(n)$.
 Além disso, nem sempre é útil dizer que ``\textit{insertion sort} \emph{é} $O(n^2)$''; por mais que isso seja verdade,
 poderíamos ter usado qualquer outro $O(n^k)$ em que $k \ge 2$ \parencite[56--57]{clrs2022}.
-\pagebreak
+\newpage
 
 \subsection{Exemplos}
 Seguem agora questões resolvidas do Enade para elucidar a análise de complexidade assintótica.
@@ -440,7 +441,7 @@ se estende até que ela seja explicitamente desalocada.
 Por isso, a chamada à função \texttt{free(p)} não é opcional para evitar o vazamento de memória.
 Como apenas as afirmações I e II estão corretas, temos que C é a opção correta.
 
-\section{Classes de Complexidade}
+\section{Classes de Complexidade}\label{sec:class}
 Enquanto problemas como o de caminho mínimo (Dijkstra%
 \footnote{Vídeo: \textit{How Dijkstra's Algorithm Works} (Canal Spanning Tree) --- \url{https://www.youtube.com/watch?v=EFg3u_E6eHU}})
 e de árvore geradora mínima (Prim/Kruskal%
@@ -461,7 +462,7 @@ Segundo \textcite[cap.~34]{clrs2022}, temos as seguintes classes (dentre várias
 \end{itemize}
 Para mapear os problemas de forma mais precisa, definem-se os conceitos de $NP$-completo e $NP$-difícil:
 \begin{itemize}
-    \item $NP$-completo:
+    \item $NP$-completo:\label{it:npc}
     São os problemas mais difíceis dentro da classe $NP$.
     Um problema é $NP$-completo se ele pertence a $NP$ e qualquer outro problema de $NP$ pode ser reduzido a ele em tempo polinomial.
     Intuitivamente, eles representam uma ``ponte universal'': se um único problema $NP$-completo for resolvido em tempo polinomial
@@ -529,10 +530,47 @@ O algoritmo de Dijkstra calcula o caminho mínimo entre dois vértices,
 sem garantir que todos os demais $n$ vértices do grafo sejam visitados \parencite[cap.~22]{clrs2022}.
 
 A opção E está correta.
-Como o problema descrito se reduz ao TSP e pertence à classe NP-difícil na versão de otimização,
+Como o problema descrito se reduz ao TSP e pertence à classe $NP$-difícil na versão de otimização,
 qualquer algoritmo conhecido para resolvê-lo exige tempo de execução não-polinomial no pior caso \parencite[seç.~34.5.4]{clrs2022}.
 
-% TODO: 2014-28
+\begin{question}{2014-28}
+Um cientista afirma ter encontrado uma redução polinomial de um problema $NP$-completo para um problema pertencente à classe $P$.
+Considerando que esta afirmação tem implicações importantes no que diz respeito à complexidade computacional,
+avalie as seguintes asserções e a relação proposta entre elas.
+
+\begin{enumerate}[label=\Roman*.]
+    \item A descoberta do cientista implica $P = NP$.
+\end{enumerate}
+
+\begin{center}
+    \textbf{PORQUE}
+\end{center}
+
+\begin{enumerate}[label=\Roman*., start=2]
+    \item A descoberta do cientista implica na existência de algoritmos polinomiais para todos os problemas $NP$-completos.
+\end{enumerate}
+
+\noindent
+A respeito dessas asserções, assinale a opção correta.
+
+\begin{spacing}{0.9}
+\begin{small}
+\begin{enumerate}[label=\Alph*)]
+    \item As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.
+    \item As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.
+    \item A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.
+    \item A asserção I é uma proposição falsa, e a II é uma proposição verdadeira.
+    \item As asserções I e II são proposições falsas.
+\end{enumerate}
+\end{small}
+\end{spacing}
+\end{question}
+
+Conforme apresentado na seção~\ref{sec:class} (página~\pageref{it:npc}),
+se um problema $NP$-completo pode ser reduzido e resolvido em tempo polinomial ($P$),
+todos os demais problemas em $NP$ também terão solução polinomial (Asserção II verdadeira),
+o que implica que $P = NP$ (Asserção I verdadeira).
+Logo, eliminando todas as opções contraditórias, temos que A é a opção correta.
 \begin{question}{2014-30}
 Uma fazenda possui um único poço artesiano que deve abastecer $n$ bebedouros para o gado. Deseja-se determinar um projeto de ligação entre esses $n+1$ pontos através de encanamentos com a menor extensão total. Um algoritmo proposto para a solução do problema executa os seguintes passos:
 
@@ -578,7 +616,93 @@ Portanto, a opção correta é a letra A.
 
 % TODO: 2017-33
 
-% TODO: 2021-20
+\newpage
+
+\section{Algoritmos de Busca e de Ordenação}
+
+Os algoritmos de busca são utilizados para localizar um determinado elemento em uma coleção de dados.
+Dependendo da estratégia utilizada, o custo computacional pode variar significativamente em função do tamanho da entrada.
+
+Os algoritmos de ordenação, por sua vez, têm como objetivo organizar os elementos de uma coleção de dados de acordo com um determinado critério,
+como a ordem crescente ou decrescente.
+Diferentes estratégias podem ser utilizadas para realizar essa tarefa,
+apresentando custos computacionais distintos em função do tamanho e das características da entrada.
+
+\subsection{Exemplos}
+Seguem agora questões resolvidas do Enade que envolvem os algoritmos de busca e ordenação.
+
+\begin{question}{2021-20}
+Observe o código abaixo escrito na linguagem C.
+
+\begin{Verbatim}[numbers=left]
+#include <stdio.h>
+#define TAM 10
+int funcao1(int vetor[], int v){
+    int i;
+    for (i = 0; i < TAM; i++){
+        if (vetor[i] == v)
+            return i;
+    }
+    return -1;
+}
+int funcao2(int vetor[], int v, int i, int f){
+    int m = (i + f) / 2;
+    if (v == vetor[m])
+        return m;
+    if (i >= f)
+        return -1;
+    if (v > vetor[m])
+        return funcao2(vetor, v, m+1, f);
+    else
+        return funcao2(vetor, v, i, m-1);
+}
+int main(){
+    int vetor[TAM] = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
+    printf("%d - %d", funcao1(vetor, 15), funcao2(vetor, 15, 0, TAM-1));
+    return 0;
+}
+\end{Verbatim}
+
+A respeito das funções implementadas, avalie as afirmações a seguir.
+
+\begin{enumerate}[label=\Roman*.]
+    \item O resultado da impressão na linha 24 é: 7 - 7.
+    \item A função \texttt{funcao1}, no pior caso, é uma estratégia mais rápida do que a \texttt{funcao2}.
+    \item A função \texttt{funcao2} implementa uma estratégia iterativa na concepção do algoritmo.
+\end{enumerate}
+
+\noindent
+É correto o que se afirma em
+
+\begin{spacing}{0.9}
+\begin{small}
+\begin{enumerate}[label=\Alph*)]
+    \item I, apenas.
+    \item III, apenas.
+    \item I e II, apenas.
+    \item II e III, apenas.
+    \item I, II e III.
+\end{enumerate}
+\end{small}
+\end{spacing}
+\end{question}
+
+A afirmação I é verdadeira. A \texttt{funcao1} implementa uma busca sequencial (linear),
+percorrendo o vetor \texttt{\{1, 3, 5, 7, 9, 11, 13, 15, 17, 19\}} do índice \texttt{0} até encontrar o valor \texttt{15},
+que está armazenado no índice \texttt{7}; logo, \texttt{funcao1(vetor, 15)} retorna \texttt{7}.
+Já a \texttt{funcao2} implementa uma busca binária recursiva, iniciada com \texttt{i = 0} e \texttt{f = TAM-1 = 9}.
+Na primeira chamada, \texttt{m = (0 + 9) / 2 = 4} (divisão inteira), e como \texttt{vetor[4] = 9} é menor que \texttt{15},
+a função é chamada novamente com \texttt{i = 5} e \texttt{f = 9}.
+Nessa segunda chamada, \texttt{m = (5 + 9) / 2 = 7}, e como \texttt{vetor[7] = 15} é igual ao valor buscado,
+a função retorna \texttt{7}. Assim, a impressão na linha 24 é de fato \texttt{7 - 7}.
+
+A afirmação II é falsa. A busca sequencial da \texttt{funcao1} possui complexidade $O(n)$ no pior caso,
+pois pode ser necessário percorrer todos os \texttt{TAM} elementos do vetor até encontrar (ou não) o valor procurado.
+Já a busca binária da \texttt{funcao2}, por descartar metade do espaço de busca a cada chamada recursiva,
+possui complexidade $O(\log n)$ no pior caso. Portanto, no pior caso, é a \texttt{funcao2} que constitui a estratégia mais rápida, e não a \texttt{funcao1}.
+A afirmação III é falsa. A \texttt{funcao2} chama a si mesma nas linhas 18 e 20 (\texttt{return funcao2(...)}),
+caracterizando uma estratégia \emph{recursiva} de busca binária, e não iterativa (que exigiria o uso de um laço de repetição, como \texttt{for} ou \texttt{while}).
+Como apenas a afirmação I está correta, temos que A é a opção correta.
 
 % TODO: 2021-32
 
