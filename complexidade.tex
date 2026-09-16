@@ -6,7 +6,6 @@
 \usepackage[brazilian]{babel}
 
 % misc
-\usepackage{fmtcount}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{enumitem}
 \usepackage{fancyvrb}
@@ -67,7 +66,7 @@
 
 \begin{document}
 \maketitle
-\ordinalnum{1}[f] atividade da disciplina optativa ENADE-2026.2, do Professor Ricardo Azevedo Moreira da Silva.
+1ª atividade da disciplina optativa ENADE-2026.2, do Professor Ricardo Azevedo Moreira da Silva.
 Este documento é destinado a estudantes de Ciência da Computação
 e contém um resumo de Complexidade de Algoritmos baseado nas questões objetivas (múltipla escolha)
 selecionadas das três provas de 2014, 2017 e 2021 do \citefield{enade}{title}.
@@ -261,7 +260,7 @@ o laço interno (linhas 5--7) executará $i - 1$ vezes (a partir do momento em q
 dessa forma, esse caso demonstra um laço aninhado com complexidade quadrática, ou $\Theta(n^2)$.
 
 O Algoritmo 1 no melhor caso é $\Theta(n)$, pois teremos uma entrada com apenas um coeficiente diferente de zero ($a_n$);
-e baseado no caso anterior, o laço interno (linhas 5--7) nunca será executado;
+e baseado no caso anterior, o laço interno (linhas 5--7) será executado apenas quando $i = n$;
 dessa forma, esse caso demonstra um laço com complexidade linear, ou $\Theta(n)$.
 
 O Algoritmo 2 é mais eficiente e não possui múltiplos casos, já que, independentemente da entrada,
@@ -519,7 +518,6 @@ Logo, eliminando todas as opções contraditórias, temos que A é a opção cor
 \newpage
 
 \section{Algoritmos de Busca e de Ordenação}
-
 Os algoritmos de busca são utilizados para localizar um determinado elemento em uma coleção de dados.
 Dependendo da estratégia utilizada, o custo computacional pode variar significativamente em função do tamanho da entrada.
 
