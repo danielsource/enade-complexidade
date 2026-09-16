@@ -24,9 +24,6 @@
 \onehalfspacing
 \usepackage[top=3cm,bottom=2cm,left=3cm,right=2cm]{geometry}
 
-% árvore binária
-\usepackage{tikz}
-
 % font
 \usepackage[scaled]{helvet}
 \renewcommand{\familydefault}{\sfdefault}
@@ -41,6 +38,9 @@
     citecolor=.
 }
 \urlstyle{same}
+
+% árvore binária
+\usepackage{tikz}
 
 \newenvironment{question}[1]{%
     \pdfbookmark[3]{Questão #1}{q:#1}
@@ -276,65 +276,6 @@ A asserção II é verdadeira, pois ambos os algoritmos no melhor caso possuem c
 Como a asserção I é falsa, não temos a relação proposta (``asserção I porque asserção II'').
 Logo, eliminando todas as opções contraditórias, temos que D é a opção correta.
 
-\begin{question}{2014-13}
-A figura a seguir apresenta uma árvore binária de pesquisa, que mantém a seguinte propriedade fundamental: o valor associado à raiz é sempre menor do que o valor de todos os nós da subárvore à direita e sempre maior do que o valor de todos os nós da subárvore à esquerda.
-\vspace{0.5cm}
-\begin{center}
-\begin{tikzpicture}[
-    level distance=1.2cm,
-    level 1/.style={sibling distance=3.5cm},
-    level 2/.style={sibling distance=2cm},
-    level 3/.style={sibling distance=1.5cm},
-    every node/.style={circle, draw, thick, fill=yellow!80, minimum size=8mm, inner sep=1pt, font=\sffamily\large},
-    edge from parent/.style={draw, thick}
-]
-\node {15}
-    child {node {10}
-        child {node {7}}
-        child {node {13}
-            child[missing] % Espaço vazio para manter o 14 à direita
-            child {node {14}}
-        }
-    }
-    child {node {20}
-        child {node {17}}
-        child {node {25}}
-    };
-\end{tikzpicture}
-\end{center}
-\vspace{0.5cm}
-
-Em relação à árvore apresentada na figura, avalie as afirmações a seguir.
-
-\begin{enumerate}[label=\Roman*.]
-    \item A árvore possui a vantagem de realizar a busca de elementos de forma eficiente, como a busca binária em um vetor.
-    \item A árvore está desbalanceada, pois a subárvore da esquerda possui um número de nós maior do que a subárvore da direita.
-    \item Quando a árvore é percorrida utilizando o método de caminhamento pós-ordem, os valores são encontrados em ordem decrescente.
-    \item O número de comparações realizadas em função do número $n$ de elementos na árvore em uma busca binária realizada com sucesso é $O(\log n)$.
-\end{enumerate}
-
-É correto apenas o que se afirma em
-\begin{enumerate}
-    \item[(A)] I e III.
-    \item[(B)] I e IV.
-    \item[(C)] II e III.
-    \item[(D)] I, II e IV.
-    \item[(E)] II, III e IV.
-\end{enumerate}
-\end{question}
-
-Para um melhor entendimento, é indicada a leitura do artigo \textit{\citefield{article}{title}} \parencite{article}.
-
-A afirmação I é verdadeira. A árvore binária de pesquisa permite a busca eficiente semelhante à busca binária em um vetor ordenado, pois a cada comparação reduzimos pela metade o espaço de busca.
-
-A afirmação II é falsa. A árvore está balanceada, pois a subárvore da esquerda possui 4 nós e a subárvore da direita possui 3 nós, e uma árvore binária apenas fica desbalanceada quando a diferença entre o número de nós das subárvores esquerda e direita é maior que 1.
-
-A afirmação III é falsa. O caminhamento pós-ordem visita os nós na ordem: filhos da esquerda, filhos da direita, e depois o valor do seu nó. Portanto, os valores serão impressos na seguinte ordem: 7, 14, 13, 10, 17, 25, 20, 15.
-
-A afirmação IV é verdadeira. O número de comparações em uma busca binária realizada com sucesso é $O(\log n)$, pois a cada comparação o espaço de busca é reduzido pela metade, o que significa que, se a árvore duplicasse de tamanho, seria necessária apenas mais uma comparação para reduzir seu espaço de busca de volta.
-
-
-
 \begin{question}{2014-16}
 Uma pilha é uma estrutura de dados que armazena uma coleção de itens de dados relacionados e que garante o seguinte funcionamento:
 o último elemento a ser inserido é o primeiro a ser removido.
@@ -367,7 +308,10 @@ int pop(pilha *p) {
     return a;
 }
 \end{Verbatim}
+\medskip
+\end{minipage}
 
+\noindent
 O programa a seguir utiliza uma pilha.
 
 \begin{Verbatim}[numbers=left]
@@ -385,8 +329,6 @@ int main() {
     return 0;
 }
 \end{Verbatim}
-\medskip
-\end{minipage}
 
 \noindent
 A esse respeito, avalie as afirmações a seguir.
@@ -453,6 +395,81 @@ apresentando custos computacionais distintos em função do tamanho e das caract
 \subsection{Exemplos}
 Seguem agora questões resolvidas do Enade que envolvem os algoritmos de busca e ordenação.
 
+\begin{question}{2014-13}
+A figura a seguir apresenta uma árvore binária de pesquisa, que mantém a seguinte propriedade fundamental:
+o valor associado à raiz é sempre menor do que o valor de todos os nós da subárvore à direita e sempre maior do que o valor de todos os nós da subárvore à esquerda.
+
+\vspace{-0.5cm}
+\begin{center}
+\begin{tikzpicture}[
+    level distance=0.7cm,
+    level/.style={sibling distance=3.5cm/(1.5^(#1-1))},
+    every node/.style={circle, draw, thick, fill=yellow!80, minimum size=6mm, inner sep=1pt, font=\sffamily},
+    edge from parent/.style={draw, thick}
+]
+\node {15}
+    child { node {10}
+        child { node {7} }
+        child { node {13}
+            child[missing]
+            child { node {14} }
+        }
+    }
+    child { node {20}
+        child { node {17} }
+        child { node {25} }
+    };
+\end{tikzpicture}
+\end{center}
+
+\noindent
+Em relação à árvore apresentada na figura, avalie as afirmações a seguir.
+
+\begin{enumerate}[label=\Roman*.]
+    \item A árvore possui a vantagem de realizar a busca de elementos de forma eficiente, como a busca binária em um vetor.
+    \item A árvore está desbalanceada, pois a subárvore da esquerda possui um número de nós maior do que a subárvore da direita.
+    \item Quando a árvore é percorrida utilizando o método de caminhamento pós-ordem, os valores são encontrados em ordem decrescente.
+    \item O número de comparações realizadas em função do número $n$ de elementos na árvore em uma busca binária realizada com sucesso é $O(\log n)$.
+\end{enumerate}
+
+\noindent
+É correto apenas o que se afirma em
+
+\begin{spacing}{0.9}
+\begin{small}
+\begin{enumerate}[label=\Alph*)]
+    \item I e III.
+    \item I e IV.
+    \item II e III.
+    \item I, II e IV.
+    \item II, III e IV.
+\end{enumerate}
+\end{small}
+\end{spacing}
+\end{question}
+
+A afirmação I é verdadeira.
+A árvore binária de pesquisa permite a busca eficiente de forma análoga à busca binária em um vetor ordenado,
+pois a cada passo a busca desce um nível na árvore,
+reduzindo o espaço de busca proporcionalmente à sua altura \parencite[seç.~12.2]{clrs2022}.
+
+A afirmação II é falsa.
+A árvore encontra-se balanceada,
+pois a diferença de altura entre a subárvore esquerda e a subárvore direita é de no máximo 1 \parencite[seç.~13.1]{clrs2022}.
+Uma árvore binária só é considerada desbalanceada
+quando a diferença entre as alturas das subárvores de algum nó é estritamente maior que 1 \parencite[cap.~13]{clrs2022}.
+
+A afirmação III é falsa.
+O caminhamento pós-ordem (\textit{postorder tree walk}) visita recursivamente a subárvore esquerda,
+a subárvore direita e, por último, o nó raiz.
+A sequência gerada (7, 14, 13, 10, 17, 25, 20, 15) não está disposta em ordem decrescente \parencite[seç.~12.1]{clrs2022}.
+
+A afirmação IV é verdadeira.
+O tempo de execução de uma busca em uma árvore binária de busca é limitado por sua altura $h$,
+a qual em uma árvore balanceada é $h = O(\log n)$,
+garantindo que o número de comparações seja $O(\log n)$ \parencite[seç.~12.2]{clrs2022}.
+Logo, a opção correta é a B.
+
 \begin{question}{2021-20}
 Observe o código abaixo escrito na linguagem C.
 
@@ -468,7 +485,6 @@ int funcao1(int vetor[], int v){
     return -1;
 }
 \end{Verbatim}
-\newpage
 
 \begin{Verbatim}[numbers=left,firstnumber=last]
 int funcao2(int vetor[], int v, int i, int f){
@@ -838,12 +854,19 @@ se um problema $NP$-completo pode ser reduzido e resolvido em tempo polinomial (
 todos os demais problemas em $NP$ também terão solução polinomial (Asserção II verdadeira),
 o que implica que $P = NP$ (Asserção I verdadeira).
 Logo, eliminando todas as opções contraditórias, temos que A é a opção correta.
-\begin{question}{2014-30}
-Uma fazenda possui um único poço artesiano que deve abastecer $n$ bebedouros para o gado. Deseja-se determinar um projeto de ligação entre esses $n+1$ pontos através de encanamentos com a menor extensão total. Um algoritmo proposto para a solução do problema executa os seguintes passos:
 
+\begin{question}{2014-30}
+Uma fazenda possui um único poço artesiano que deve abastecer $n$ bebedouros para o gado.
+Deseja-se determinar um projeto de ligação entre esses $n+1$ pontos através de encanamentos com a menor extensão total.
+Um algoritmo proposto para a solução do problema executa os seguintes passos:
+
+\begin{small}
 \begin{enumerate}
-    \item Crie $n+1$ conjuntos unitários, cada um contendo um dos pontos a serem ligados entre si e insira esses conjuntos em um conjunto $C$.
-    \item Crie um conjunto $D$ contendo um registro para cada combinação possível de dois pontos distintos a serem ligados. Cada registro deve conter os campos $c_i$, $c_j$ e $d$, em que $c_i$ e $c_j$ são os dois pontos a serem ligados e $d$ é a distância entre eles.
+    \item Crie $n+1$ conjuntos unitários,
+    cada um contendo um dos pontos a serem ligados entre si e insira esses conjuntos em um conjunto $C$.
+    \item Crie um conjunto $D$ contendo um registro para cada combinação possível de dois pontos distintos a serem ligados.
+    Cada registro deve conter os campos $c_i$,
+    $c_j$ e $d$, em que $c_i$ e $c_j$ são os dois pontos a serem ligados e $d$ é a distância entre eles.
     \item Enquanto $D$ não estiver vazio faça:
     \begin{enumerate}
         \item[3.1.] Remova o registro de $D$ com o menor valor de distância $d$.
@@ -854,30 +877,52 @@ Uma fazenda possui um único poço artesiano que deve abastecer $n$ bebedouros p
         \end{enumerate}
     \end{enumerate}
 \end{enumerate}
+\end{small}
 
+\noindent
 Com base na descrição do problema e do algoritmo proposto, conclui-se que
 
-\begin{enumerate}
-    \item[(A)] o problema exemplifica a obtenção de uma árvore geradora mínima, portanto está no conjunto $P$.
-    \item[(B)] o algoritmo é uma heurística para o Problema do Caixeiro Viajante, logo apresenta complexidade polinomial.
-    \item[(C)] o problema descrito é de otimização, logo pertence ao conjunto $NP$-difícil, mas não ao conjunto $NP$-completo.
-    \item[(D)] uma alternativa para a solução do problema é usar o algoritmo de Dijkstra para obtenção do caminho mínimo entre dois pontos.
-    \item[(E)] o passo de maior custo do algoritmo é a criação do conjunto $D$ com as combinações de pontos, apresentando complexidade computacional $O(n!)$.
+\begin{spacing}{0.9}
+\begin{small}
+\begin{enumerate}[label=\Alph*)]
+    \item o problema exemplifica a obtenção de uma árvore geradora mínima, portanto está no conjunto $P$.
+    \item o algoritmo é uma heurística para o Problema do Caixeiro Viajante, logo apresenta complexidade polinomial.
+    \item o problema descrito é de otimização, logo pertence ao conjunto $NP$-difícil, mas não ao conjunto $NP$-completo.
+    \item uma alternativa para a solução do problema é usar o algoritmo de Dijkstra para obtenção do caminho mínimo entre dois pontos.
+    \item o passo de maior custo do algoritmo é a criação do conjunto $D$ com as combinações de pontos,
+    apresentando complexidade computacional $O(n!)$.
 \end{enumerate}
+\end{small}
+\end{spacing}
 \end{question}
 
-O problema descrito consiste em um conjunto com $n+1$ pontos, sendo $n$ o número de bebedouros e $1$ o poço artesiano. O objetivo é encontrar a forma de conectar todos os pontos com o menor custo, minimizando a extensão total dos encanamentos. Esse problema é modelado como o problema da Árvore Geradora Mínima (MST) e é resolvido eficientemente por algoritmos como o de Kruskal e o de Prim, ambos com complexidade polinomial, pertencentes à classe de complexidade $P$. Ambos os algoritmos são do tipo guloso (escolhem a melhor opção local a cada passo e, para o problema da MST, garantem a solução ótima global). O algoritmo de Prim possui complexidade $O(E + V \log V)$ e o de Kruskal possui complexidade $O(E \log V)$, em que $E$ é o número de arestas e $V$ é o número de vértices do grafo. Para uma explicação mais detalhada, consultar o capítulo 23, página 525 do livro \textit{\citefield{clrs2022}{title}} \parencite{clrs2022}.
+O algoritmo apresentado descreve o algoritmo de Kruskal para a determinação
+de uma árvore geradora mínima (MST) em um grafo ponderado e conexo \parencite[seç.~21.2]{clrs2022}.
 
-A opção A está correta, pois o problema exemplifica a obtenção de uma árvore geradora mínima, portanto está no conjunto $P$.
+A opção A está correta.
+O problema consiste em conectar todos os vértices minimizando a extensão total dos encanamentos,
+o que caracteriza a busca por uma MST \parencite[cap.~21]{clrs2022}.
+Como o algoritmo de Kruskal resolve o problema em tempo polinomial $O(E \log V)$
+(em que $E$ são o número de arestas e $V$ o número de vértices),
+a questão pertence à classe $P$ \parencite[seç.~34.1]{clrs2022}.
 
-A opção B está incorreta, pois o algoritmo descrito não é uma heurística para o Problema do Caixeiro Viajante; ademais, o Caixeiro Viajante é um problema NP-difícil na versão de otimização, logo não é possível encontrar uma solução ótima em tempo polinomial no pior caso.
+A opção B está incorreta.
+O algoritmo não é uma heurística para o Problema do Caixeiro Viajante (TSP),
+mas sim o algoritmo exato de Kruskal para MST \parencite[seç.~21.2]{clrs2022}.
 
-A opção C está incorreta. O problema descrito é de otimização, mas pertence ao conjunto $P$, e não ao conjunto NP-difícil, uma vez que é possível encontrar a solução ótima em tempo polinomial.
+A opção C está incorreta.
+Sendo um problema com solução exata de complexidade polinomial,
+a MST pertence à classe $P$, e não ao conjunto $NP$-difícil \parencite[seç.~34.1]{clrs2022}.
 
-A opção D está incorreta, pois o algoritmo de Dijkstra é utilizado para encontrar o caminho mínimo entre dois pontos, logo não resolve o problema da árvore geradora mínima, uma vez que é preciso encontrar uma solução que conecte todos os pontos com o menor custo total.
+A opção D está incorreta.
+O algoritmo de Dijkstra resolve o problema de caminhos mínimos a partir de uma única origem \parencite[seç.~22.3]{clrs2022},
+o que não garante a conexão de todos os vértices com custo total mínimo.
 
-A opção E está incorreta. A criação do conjunto $D$ é realmente a parte de maior custo do algoritmo, mas o processo de criar as combinações de pontos tem complexidade $O(n^2)$, e não $O(n!)$, visto que a ordem dos pares não importa — ou seja, $(A, B)$ ou $(B, A)$ —, logo o número de combinações é dado por $C(n+1, 2) = \frac{(n+1)!}{2!(n-1)!} = \frac{(n+1)n}{2} = O(n^2)$.
-Portanto, a opção correta é a letra A.
+A opção E está incorreta.
+Para $n+1$ vértices, o número máximo de pares não ordenados no conjunto $D$ é dado pela combinação
+$\binom{n+1}{2} = \frac{(n+1)!}{2! \cdot ((n+1) - 2)!} = \frac{(n+1)n}{2} = O(n^2)$, e não por $O(n!)$ \parencite[seç.~C.1]{clrs2022}.
+Logo, a opção correta é a A.
+\newpage
 
 \printbibliography[heading=bibintoc]
 \end{document}

@@ -10,5 +10,4 @@ build
 *.out
 *.pdf
 *.run.xml
-complexidade.synctex.gz
 *.synctex*
