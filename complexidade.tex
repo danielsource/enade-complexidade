@@ -379,138 +379,96 @@ se estende até que ela seja explicitamente desalocada.
 Por isso, a chamada à função \texttt{free(p)} não é opcional para evitar o vazamento de memória.
 Como apenas as afirmações I e II estão corretas, temos que C é a opção correta.
 
-\section{Classes de Complexidade}\label{sec:class}
-Enquanto problemas como o de caminho mínimo (Dijkstra%
-\footnote{Vídeo: \textit{How Dijkstra's Algorithm Works} (Canal Spanning Tree) --- \url{https://www.youtube.com/watch?v=EFg3u_E6eHU}})
-e de árvore geradora mínima (Prim/Kruskal%
-\footnote{Vídeo: \textit{How Do You Calculate a Minimum Spanning Tree?} (Canal Spanning Tree) --- \url{https://www.youtube.com/watch?v=Yldkh0aOEcg}})
-possuem soluções eficientes em tempo polinomial $O(n^k)$ (limite superior),
-um vasto conjunto de problemas de otimização é considerado intratável \parencite[cap.~21--22,34]{clrs2022}.
-Em termos fundamentais, um problema é dito intratável quando não possui nenhum algoritmo exato conhecido capaz de resolvê-lo em tempo polinomial
-para o pior caso, exigindo tempo de execução não-polinomial ou exponencial (por exemplo, $\Theta(2^n)$ no pior caso).
-Segundo \textcite[cap.~34]{clrs2022}, temos as seguintes classes (dentre várias outras) que demonstram a diferença entre encontrar uma solução e verificar uma solução:
-\begin{itemize}
-    \item Classe $P$ (\textit{polynomial time}):
-    Contém os problemas de decisão que podem ser \emph{resolvidos} em tempo polinomial por um algoritmo determinístico (por exemplo, em $\Theta(n^3)$ no pior caso).
-    \item Classe $NP$ (\textit{non-deterministic polynomial time}):
-    Contém os problemas cujas soluções candidatas (chamadas de certificados) podem ser \emph{verificadas} em tempo polinomial.
-    Intuitivamente, encontrar uma solução do zero pode exigir uma busca exaustiva, mas checar se uma resposta fornecida está correta é rápido.
-    Como todo problema resolvível em tempo polinomial também é verificável em tempo polinomial, temos $P \subseteq NP$.
-    A principal questão em aberto na Ciência da Computação é se $P = NP$ ou $P \neq NP$.
-\end{itemize}
-Para mapear os problemas de forma mais precisa, definem-se os conceitos de $NP$-completo e $NP$-difícil:
-\begin{itemize}
-    \item $NP$-completo:\label{it:npc}
-    São os problemas mais difíceis dentro da classe $NP$.
-    Um problema é $NP$-completo se ele pertence a $NP$ e qualquer outro problema de $NP$ pode ser reduzido a ele em tempo polinomial.
-    Intuitivamente, eles representam uma ``ponte universal'': se um único problema $NP$-completo for resolvido em tempo polinomial
-    (o que ainda não se provou possível),
-    todos os problemas de $NP$ também o seriam (implicando $P = NP$).
-    \item $NP$-difícil (\textit{NP-hard}):
-    São problemas pelo menos tão difíceis quanto os $NP$-completos, mas que não precisam pertencer à classe $NP$.
-    É a categoria em que se enquadram as versões de otimização dos problemas $NP$-completos.
-\end{itemize}
+\section{Algoritmos de Busca e de Ordenação}
+Os algoritmos de busca são utilizados para localizar um determinado elemento em uma coleção de dados.
+Dependendo da estratégia utilizada, o custo computacional pode variar significativamente em função do tamanho da entrada.
 
-Um exemplo clássico da categoria $NP$ é o Problema do Caixeiro Viajante (\textit{traveling-salesperson problem}~---~TSP).
-Na sua versão de decisão (``existe uma rota de custo no máximo $k$?''), o problema é $NP$-completo (e, consequentemente, $NP$-difícil),
-pois basta somar as arestas da rota fornecida para verificar o certificado em tempo polinomial.
-Porém, na sua versão de otimização (``qual é a rota de menor custo absoluto?''),
-o problema é apenas $NP$-difícil \parencite[seç.~34.5.4]{clrs2022}.
-
-A relevância prática dessa teoria reside no conceito de redução em tempo polinomial:
-se um problema do mundo real pode ser reduzido ao TSP, ele herda sua intratabilidade.
-Ao demonstrar que um problema é $NP$-difícil, pode-se interromper a busca por uma solução exata em tempo polinomial para o pior caso
-e adotar abordagens de aproximação ou heurísticas capazes de encontrar soluções satisfatórias em tempo viável \parencite[1045--1047,seç.~35.2]{clrs2022}.
+Os algoritmos de ordenação, por sua vez, têm como objetivo organizar os elementos de uma coleção de dados de acordo com um determinado critério,
+como a ordem crescente ou decrescente.
+Diferentes estratégias podem ser utilizadas para realizar essa tarefa,
+apresentando custos computacionais distintos em função do tamanho e das características da entrada.
 
 \subsection{Exemplos}
-Seguem agora questões resolvidas do Enade para elucidar o estudo das classes de complexidade.
+Seguem agora questões resolvidas do Enade que envolvem os algoritmos de busca e ordenação.
 
-\begin{question}{2014-22}
-Considere o processo de fabricação de um produto siderúrgico que necessita passar por $n$ tratamentos térmicos e químicos para ficar pronto.
-Cada uma das $n$ etapas de tratamento é realizada uma única vez na mesma caldeira.
-Além do custo próprio de cada etapa do tratamento, existe o custo de se passar de uma etapa para outra, uma vez que, dependendo da sequência escolhida,
-pode ser necessário alterar a temperatura da caldeira e limpá-la para evitar a reação entre os produtos químicos utilizados.
-Assuma que o processo de fabricação inicia e termina com a caldeira limpa.
-Deseja-se projetar um algoritmo para indicar a sequência de tratamentos que possibilite fabricar o produto com o menor custo total.
-Nessa situação, conclui-se que
+\begin{question}{2021-20}
+Observe o código abaixo escrito na linguagem C.
 
-\begin{spacing}{0.9}
-\begin{small}
-\begin{enumerate}[label=\Alph*)]
-    \item a solução do problema é obtida em tempo de ordem $O(n \log n)$, utilizando-se um algoritmo ótimo de ordenação.
-    \item uma heurística para a solução do problema de coloração de grafos solucionará o problema em tempo polinomial.
-    \item o problema se reduz a encontrar a árvore geradora mínima para o conjunto de etapas do processo,
-    requerendo tempo de ordem polinomial para ser solucionado.
-    \item a utilização do algoritmo de Dijkstra para se determinar o caminho de custo mínimo entre o estado inicial e o final soluciona o problema em tempo polinomial.
-    \item qualquer algoritmo conhecido para a solução do problema descrito possui ordem de complexidade de tempo não-polinomial,
-    uma vez que o problema do caixeiro viajante se reduz a ele.
-\end{enumerate}
-\end{small}
-\end{spacing}
-\end{question}
+\begin{Verbatim}[numbers=left]
+#include <stdio.h>
+#define TAM 10
+int funcao1(int vetor[], int v){
+    int i;
+    for (i = 0; i < TAM; i++){
+        if (vetor[i] == v)
+            return i;
+    }
+    return -1;
+}
+\end{Verbatim}
+\newpage
 
-O problema exige encontrar uma sequência de $n$ etapas em que cada uma é executada exatamente uma vez,
-minimizando o custo total de transição e retornando ao estado inicial. Essa descrição equivale ao Problema do Caixeiro Viajante (TSP).
+\begin{Verbatim}[numbers=left,firstnumber=last]
+int funcao2(int vetor[], int v, int i, int f){
+    int m = (i + f) / 2;
+    if (v == vetor[m])
+        return m;
+    if (i >= f)
+        return -1;
+    if (v > vetor[m])
+        return funcao2(vetor, v, m+1, f);
+    else
+        return funcao2(vetor, v, i, m-1);
+}
+int main(){
+    int vetor[TAM] = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
+    printf("%d - %d", funcao1(vetor, 15), funcao2(vetor, 15, 0, TAM-1));
+    return 0;
+}
+\end{Verbatim}
 
-A opção A está incorreta.
-Algoritmos de ordenação organizam elementos por chave e não resolvem problemas de menor rota em grafos com custos nas transições \parencite[cap.~8]{clrs2022}.
-
-A opção B está incorreta.
-A coloração de grafos busca atribuir cores a vértices adjacentes e não encontra circuitos de menor custo \parencite[prob.~34-3]{clrs2022}.
-Além disso, heurísticas não garantem encontrar a solução ótima.
-
-A opção C está incorreta.
-A árvore geradora mínima conecta todos os vértices com o menor custo total,
-mas não impõe a restrição de formar um caminho simples que visita cada etapa exatamente uma vez \parencite[cap.~21]{clrs2022}.
-
-A opção D está incorreta.
-O algoritmo de Dijkstra calcula o caminho mínimo entre dois vértices,
-sem garantir que todos os demais $n$ vértices do grafo sejam visitados \parencite[cap.~22]{clrs2022}.
-
-A opção E está correta.
-Como o problema descrito se reduz ao TSP e pertence à classe $NP$-difícil na versão de otimização,
-qualquer algoritmo conhecido para resolvê-lo exige tempo de execução não-polinomial no pior caso \parencite[seç.~34.5.4]{clrs2022}.
-
-\begin{question}{2014-28}
-Um cientista afirma ter encontrado uma redução polinomial de um problema $NP$-completo para um problema pertencente à classe $P$.
-Considerando que esta afirmação tem implicações importantes no que diz respeito à complexidade computacional,
-avalie as seguintes asserções e a relação proposta entre elas.
+A respeito das funções implementadas, avalie as afirmações a seguir.
 
 \begin{enumerate}[label=\Roman*.]
-    \item A descoberta do cientista implica $P = NP$.
-\end{enumerate}
-
-\begin{center}
-    \textbf{PORQUE}
-\end{center}
-
-\begin{enumerate}[label=\Roman*., start=2]
-    \item A descoberta do cientista implica na existência de algoritmos polinomiais para todos os problemas $NP$-completos.
+    \item O resultado da impressão na linha 24 é: 7 - 7.
+    \item A função \texttt{funcao1}, no pior caso, é uma estratégia mais rápida do que a \texttt{funcao2}.
+    \item A função \texttt{funcao2} implementa uma estratégia iterativa na concepção do algoritmo.
 \end{enumerate}
 
 \noindent
-A respeito dessas asserções, assinale a opção correta.
+É correto o que se afirma em
 
 \begin{spacing}{0.9}
 \begin{small}
 \begin{enumerate}[label=\Alph*)]
-    \item As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.
-    \item As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.
-    \item A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.
-    \item A asserção I é uma proposição falsa, e a II é uma proposição verdadeira.
-    \item As asserções I e II são proposições falsas.
+    \item I, apenas.
+    \item III, apenas.
+    \item I e II, apenas.
+    \item II e III, apenas.
+    \item I, II e III.
 \end{enumerate}
 \end{small}
 \end{spacing}
 \end{question}
 
-Conforme apresentado na seção~\ref{sec:class} (página~\pageref{it:npc}),
-se um problema $NP$-completo pode ser reduzido e resolvido em tempo polinomial ($P$),
-todos os demais problemas em $NP$ também terão solução polinomial (Asserção II verdadeira),
-o que implica que $P = NP$ (Asserção I verdadeira).
-Logo, eliminando todas as opções contraditórias, temos que A é a opção correta.
+A afirmação I é verdadeira. A \texttt{funcao1} implementa uma busca sequencial (linear),
+percorrendo o vetor \texttt{\{1, 3, 5, 7, 9, 11, 13, 15, 17, 19\}} do índice \texttt{0} até encontrar o valor \texttt{15},
+que está armazenado no índice \texttt{7}; logo, \texttt{funcao1(vetor, 15)} retorna \texttt{7}.
+Já a \texttt{funcao2} implementa uma busca binária recursiva, iniciada com \texttt{i = 0} e \texttt{f = TAM-1 = 9}.
+Na primeira chamada, \texttt{m = (0 + 9) / 2 = 4} (divisão inteira), e como \texttt{vetor[4] = 9} é menor que \texttt{15},
+a função é chamada novamente com \texttt{i = 5} e \texttt{f = 9}.
+Nessa segunda chamada, \texttt{m = (5 + 9) / 2 = 7}, e como \texttt{vetor[7] = 15} é igual ao valor buscado,
+a função retorna \texttt{7}. Assim, a impressão na linha 24 é de fato \texttt{7 - 7}.
 
-% TODO: 2014-30
+A afirmação II é falsa. A busca sequencial da \texttt{funcao1} possui complexidade $O(n)$ no pior caso,
+pois pode ser necessário percorrer todos os \texttt{TAM} elementos do vetor até encontrar (ou não) o valor procurado.
+Já a busca binária da \texttt{funcao2}, por descartar metade do espaço de busca a cada chamada recursiva,
+possui complexidade $O(\log n)$ no pior caso. Portanto, no pior caso, é a \texttt{funcao2} que constitui a estratégia mais rápida, e não a \texttt{funcao1}.
+A afirmação III é falsa. A \texttt{funcao2} chama a si mesma nas linhas 18 e 20 (\texttt{return funcao2(...)}),
+caracterizando uma estratégia \emph{recursiva} de busca binária, e não iterativa (que exigiria o uso de um laço de repetição, como \texttt{for} ou \texttt{while}).
+Como apenas a afirmação I está correta, temos que A é a opção correta.
+
+% TODO: 2021-32
 
 \section{Recorrências e Divisão e Conquista}\label{sec:recorrencia}
 Muitos algoritmos recursivos podem ser analisados por meio de uma \emph{recorrência}:
@@ -688,94 +646,138 @@ ela inevitavelmente também é limitada por um limite mais folgado como $n \log 
 Portanto, dizer que é $O(n \log n)$ é correto.
 Como as afirmações II e III estão corretas, temos que D é a opção correta.
 
-\newpage
+\section{Classes de Complexidade}\label{sec:class}
+Enquanto problemas como o de caminho mínimo (Dijkstra%
+\footnote{Vídeo: \textit{How Dijkstra's Algorithm Works} (Canal Spanning Tree) --- \url{https://www.youtube.com/watch?v=EFg3u_E6eHU}})
+e de árvore geradora mínima (Prim/Kruskal%
+\footnote{Vídeo: \textit{How Do You Calculate a Minimum Spanning Tree?} (Canal Spanning Tree) --- \url{https://www.youtube.com/watch?v=Yldkh0aOEcg}})
+possuem soluções eficientes em tempo polinomial $O(n^k)$ (limite superior),
+um vasto conjunto de problemas de otimização é considerado intratável \parencite[cap.~21--22,34]{clrs2022}.
+Em termos fundamentais, um problema é dito intratável quando não possui nenhum algoritmo exato conhecido capaz de resolvê-lo em tempo polinomial
+para o pior caso, exigindo tempo de execução não-polinomial ou exponencial (por exemplo, $\Theta(2^n)$ no pior caso).
+Segundo \textcite[cap.~34]{clrs2022}, temos as seguintes classes (dentre várias outras) que demonstram a diferença entre encontrar uma solução e verificar uma solução:
+\begin{itemize}
+    \item Classe $P$ (\textit{polynomial time}):
+    Contém os problemas de decisão que podem ser \emph{resolvidos} em tempo polinomial por um algoritmo determinístico (por exemplo, em $\Theta(n^3)$ no pior caso).
+    \item Classe $NP$ (\textit{non-deterministic polynomial time}):
+    Contém os problemas cujas soluções candidatas (chamadas de certificados) podem ser \emph{verificadas} em tempo polinomial.
+    Intuitivamente, encontrar uma solução do zero pode exigir uma busca exaustiva, mas checar se uma resposta fornecida está correta é rápido.
+    Como todo problema resolvível em tempo polinomial também é verificável em tempo polinomial, temos $P \subseteq NP$.
+    A principal questão em aberto na Ciência da Computação é se $P = NP$ ou $P \neq NP$.
+\end{itemize}
+Para mapear os problemas de forma mais precisa, definem-se os conceitos de $NP$-completo e $NP$-difícil:
+\begin{itemize}
+    \item $NP$-completo:\label{it:npc}
+    São os problemas mais difíceis dentro da classe $NP$.
+    Um problema é $NP$-completo se ele pertence a $NP$ e qualquer outro problema de $NP$ pode ser reduzido a ele em tempo polinomial.
+    Intuitivamente, eles representam uma ``ponte universal'': se um único problema $NP$-completo for resolvido em tempo polinomial
+    (o que ainda não se provou possível),
+    todos os problemas de $NP$ também o seriam (implicando $P = NP$).
+    \item $NP$-difícil (\textit{NP-hard}):
+    São problemas pelo menos tão difíceis quanto os $NP$-completos, mas que não precisam pertencer à classe $NP$.
+    É a categoria em que se enquadram as versões de otimização dos problemas $NP$-completos.
+\end{itemize}
 
-\section{Algoritmos de Busca e de Ordenação}
-Os algoritmos de busca são utilizados para localizar um determinado elemento em uma coleção de dados.
-Dependendo da estratégia utilizada, o custo computacional pode variar significativamente em função do tamanho da entrada.
+Um exemplo clássico da categoria $NP$ é o Problema do Caixeiro Viajante (\textit{traveling-salesperson problem}~---~TSP).
+Na sua versão de decisão (``existe uma rota de custo no máximo $k$?''), o problema é $NP$-completo (e, consequentemente, $NP$-difícil),
+pois basta somar as arestas da rota fornecida para verificar o certificado em tempo polinomial.
+Porém, na sua versão de otimização (``qual é a rota de menor custo absoluto?''),
+o problema é apenas $NP$-difícil \parencite[seç.~34.5.4]{clrs2022}.
 
-Os algoritmos de ordenação, por sua vez, têm como objetivo organizar os elementos de uma coleção de dados de acordo com um determinado critério,
-como a ordem crescente ou decrescente.
-Diferentes estratégias podem ser utilizadas para realizar essa tarefa,
-apresentando custos computacionais distintos em função do tamanho e das características da entrada.
+A relevância prática dessa teoria reside no conceito de redução em tempo polinomial:
+se um problema do mundo real pode ser reduzido ao TSP, ele herda sua intratabilidade.
+Ao demonstrar que um problema é $NP$-difícil, pode-se interromper a busca por uma solução exata em tempo polinomial para o pior caso
+e adotar abordagens de aproximação ou heurísticas capazes de encontrar soluções satisfatórias em tempo viável \parencite[1045--1047,seç.~35.2]{clrs2022}.
 
 \subsection{Exemplos}
-Seguem agora questões resolvidas do Enade que envolvem os algoritmos de busca e ordenação.
+Seguem agora questões resolvidas do Enade para elucidar o estudo das classes de complexidade.
 
-\begin{question}{2021-20}
-Observe o código abaixo escrito na linguagem C.
-
-\begin{Verbatim}[numbers=left]
-#include <stdio.h>
-#define TAM 10
-int funcao1(int vetor[], int v){
-    int i;
-    for (i = 0; i < TAM; i++){
-        if (vetor[i] == v)
-            return i;
-    }
-    return -1;
-}
-int funcao2(int vetor[], int v, int i, int f){
-    int m = (i + f) / 2;
-    if (v == vetor[m])
-        return m;
-    if (i >= f)
-        return -1;
-    if (v > vetor[m])
-        return funcao2(vetor, v, m+1, f);
-    else
-        return funcao2(vetor, v, i, m-1);
-}
-int main(){
-    int vetor[TAM] = {1, 3, 5, 7, 9, 11, 13, 15, 17, 19};
-    printf("%d - %d", funcao1(vetor, 15), funcao2(vetor, 15, 0, TAM-1));
-    return 0;
-}
-\end{Verbatim}
-
-A respeito das funções implementadas, avalie as afirmações a seguir.
-
-\begin{enumerate}[label=\Roman*.]
-    \item O resultado da impressão na linha 24 é: 7 - 7.
-    \item A função \texttt{funcao1}, no pior caso, é uma estratégia mais rápida do que a \texttt{funcao2}.
-    \item A função \texttt{funcao2} implementa uma estratégia iterativa na concepção do algoritmo.
-\end{enumerate}
-
-\noindent
-É correto o que se afirma em
+\begin{question}{2014-22}
+Considere o processo de fabricação de um produto siderúrgico que necessita passar por $n$ tratamentos térmicos e químicos para ficar pronto.
+Cada uma das $n$ etapas de tratamento é realizada uma única vez na mesma caldeira.
+Além do custo próprio de cada etapa do tratamento, existe o custo de se passar de uma etapa para outra, uma vez que, dependendo da sequência escolhida,
+pode ser necessário alterar a temperatura da caldeira e limpá-la para evitar a reação entre os produtos químicos utilizados.
+Assuma que o processo de fabricação inicia e termina com a caldeira limpa.
+Deseja-se projetar um algoritmo para indicar a sequência de tratamentos que possibilite fabricar o produto com o menor custo total.
+Nessa situação, conclui-se que
 
 \begin{spacing}{0.9}
 \begin{small}
 \begin{enumerate}[label=\Alph*)]
-    \item I, apenas.
-    \item III, apenas.
-    \item I e II, apenas.
-    \item II e III, apenas.
-    \item I, II e III.
+    \item a solução do problema é obtida em tempo de ordem $O(n \log n)$, utilizando-se um algoritmo ótimo de ordenação.
+    \item uma heurística para a solução do problema de coloração de grafos solucionará o problema em tempo polinomial.
+    \item o problema se reduz a encontrar a árvore geradora mínima para o conjunto de etapas do processo,
+    requerendo tempo de ordem polinomial para ser solucionado.
+    \item a utilização do algoritmo de Dijkstra para se determinar o caminho de custo mínimo entre o estado inicial e o final soluciona o problema em tempo polinomial.
+    \item qualquer algoritmo conhecido para a solução do problema descrito possui ordem de complexidade de tempo não-polinomial,
+    uma vez que o problema do caixeiro viajante se reduz a ele.
 \end{enumerate}
 \end{small}
 \end{spacing}
 \end{question}
 
-A afirmação I é verdadeira. A \texttt{funcao1} implementa uma busca sequencial (linear),
-percorrendo o vetor \texttt{\{1, 3, 5, 7, 9, 11, 13, 15, 17, 19\}} do índice \texttt{0} até encontrar o valor \texttt{15},
-que está armazenado no índice \texttt{7}; logo, \texttt{funcao1(vetor, 15)} retorna \texttt{7}.
-Já a \texttt{funcao2} implementa uma busca binária recursiva, iniciada com \texttt{i = 0} e \texttt{f = TAM-1 = 9}.
-Na primeira chamada, \texttt{m = (0 + 9) / 2 = 4} (divisão inteira), e como \texttt{vetor[4] = 9} é menor que \texttt{15},
-a função é chamada novamente com \texttt{i = 5} e \texttt{f = 9}.
-Nessa segunda chamada, \texttt{m = (5 + 9) / 2 = 7}, e como \texttt{vetor[7] = 15} é igual ao valor buscado,
-a função retorna \texttt{7}. Assim, a impressão na linha 24 é de fato \texttt{7 - 7}.
+O problema exige encontrar uma sequência de $n$ etapas em que cada uma é executada exatamente uma vez,
+minimizando o custo total de transição e retornando ao estado inicial. Essa descrição equivale ao Problema do Caixeiro Viajante (TSP).
 
-A afirmação II é falsa. A busca sequencial da \texttt{funcao1} possui complexidade $O(n)$ no pior caso,
-pois pode ser necessário percorrer todos os \texttt{TAM} elementos do vetor até encontrar (ou não) o valor procurado.
-Já a busca binária da \texttt{funcao2}, por descartar metade do espaço de busca a cada chamada recursiva,
-possui complexidade $O(\log n)$ no pior caso. Portanto, no pior caso, é a \texttt{funcao2} que constitui a estratégia mais rápida, e não a \texttt{funcao1}.
-A afirmação III é falsa. A \texttt{funcao2} chama a si mesma nas linhas 18 e 20 (\texttt{return funcao2(...)}),
-caracterizando uma estratégia \emph{recursiva} de busca binária, e não iterativa (que exigiria o uso de um laço de repetição, como \texttt{for} ou \texttt{while}).
-Como apenas a afirmação I está correta, temos que A é a opção correta.
+A opção A está incorreta.
+Algoritmos de ordenação organizam elementos por chave e não resolvem problemas de menor rota em grafos com custos nas transições \parencite[cap.~8]{clrs2022}.
 
-% TODO: 2021-32
+A opção B está incorreta.
+A coloração de grafos busca atribuir cores a vértices adjacentes e não encontra circuitos de menor custo \parencite[prob.~34-3]{clrs2022}.
+Além disso, heurísticas não garantem encontrar a solução ótima.
+
+A opção C está incorreta.
+A árvore geradora mínima conecta todos os vértices com o menor custo total,
+mas não impõe a restrição de formar um caminho simples que visita cada etapa exatamente uma vez \parencite[cap.~21]{clrs2022}.
+
+A opção D está incorreta.
+O algoritmo de Dijkstra calcula o caminho mínimo entre dois vértices,
+sem garantir que todos os demais $n$ vértices do grafo sejam visitados \parencite[cap.~22]{clrs2022}.
+
+A opção E está correta.
+Como o problema descrito se reduz ao TSP e pertence à classe $NP$-difícil na versão de otimização,
+qualquer algoritmo conhecido para resolvê-lo exige tempo de execução não-polinomial no pior caso \parencite[seç.~34.5.4]{clrs2022}.
+
+\begin{question}{2014-28}
+Um cientista afirma ter encontrado uma redução polinomial de um problema $NP$-completo para um problema pertencente à classe $P$.
+Considerando que esta afirmação tem implicações importantes no que diz respeito à complexidade computacional,
+avalie as seguintes asserções e a relação proposta entre elas.
+
+\begin{enumerate}[label=\Roman*.]
+    \item A descoberta do cientista implica $P = NP$.
+\end{enumerate}
+
+\begin{center}
+    \textbf{PORQUE}
+\end{center}
+
+\begin{enumerate}[label=\Roman*., start=2]
+    \item A descoberta do cientista implica na existência de algoritmos polinomiais para todos os problemas $NP$-completos.
+\end{enumerate}
+
+\noindent
+A respeito dessas asserções, assinale a opção correta.
+
+\begin{spacing}{0.9}
+\begin{small}
+\begin{enumerate}[label=\Alph*)]
+    \item As asserções I e II são proposições verdadeiras, e a II é uma justificativa correta da I.
+    \item As asserções I e II são proposições verdadeiras, mas a II não é uma justificativa correta da I.
+    \item A asserção I é uma proposição verdadeira, e a II é uma proposição falsa.
+    \item A asserção I é uma proposição falsa, e a II é uma proposição verdadeira.
+    \item As asserções I e II são proposições falsas.
+\end{enumerate}
+\end{small}
+\end{spacing}
+\end{question}
+
+Conforme apresentado na seção~\ref{sec:class} (página~\pageref{it:npc}),
+se um problema $NP$-completo pode ser reduzido e resolvido em tempo polinomial ($P$),
+todos os demais problemas em $NP$ também terão solução polinomial (Asserção II verdadeira),
+o que implica que $P = NP$ (Asserção I verdadeira).
+Logo, eliminando todas as opções contraditórias, temos que A é a opção correta.
+
+% TODO: 2014-30
 
 \printbibliography[heading=bibintoc]
 \end{document}
